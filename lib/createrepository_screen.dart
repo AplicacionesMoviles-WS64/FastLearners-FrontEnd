@@ -1,4 +1,5 @@
 import 'package:fastlearners_frontend_flutter/profile_screen.dart';
+import 'package:fastlearners_frontend_flutter/viewrepositories_Screen.dart';
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'repository_screen.dart'; // Asegúrate de importar la pantalla del repositorio
@@ -20,13 +21,11 @@ class _CreateRepositoryScreenState extends State<CreateRepositoryScreen> {
   void _createRepository(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-
-      // Muestra un SnackBar de confirmación antes de redirigir
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Repositorio "$_repositoryName" creado exitosamente')),
       );
 
-      // Después de crear el repositorio, redirige a la pantalla de repositorio
+
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -61,12 +60,13 @@ class _CreateRepositoryScreenState extends State<CreateRepositoryScreen> {
         ],
       ),
       drawer: Drawer(
+
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Color.fromRGBO(189, 213, 234, 1),
               ),
               child: Text(
                 'Menú de navegación',
@@ -98,9 +98,15 @@ class _CreateRepositoryScreenState extends State<CreateRepositoryScreen> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.info),
-              title: Text('Acerca de'),
-              onTap: () {},
+              leading: Icon(Icons.create),
+              title: Text('Ver repositorios'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RepositoryListScreen()),
+                );
+              },
             ),
           ],
         ),

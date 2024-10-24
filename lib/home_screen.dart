@@ -1,4 +1,5 @@
 import 'package:fastlearners_frontend_flutter/profile_screen.dart';
+import 'package:fastlearners_frontend_flutter/viewrepositories_Screen.dart';
 import 'package:flutter/material.dart';
 import 'createrepository_screen.dart';
 
@@ -35,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Color.fromRGBO(189, 213, 234, 1)
               ),
               child: Text(
                 'Menú de navegación',
@@ -65,12 +66,13 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.info),
-              title: Text('Acerca de'),
+              leading: Icon(Icons.create),
+              title: Text('Ver repositorios'),
               onTap: () {
                 Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Acerca de')),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RepositoryListScreen()),
                 );
               },
             ),
@@ -105,14 +107,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: screenWidth * 0.6,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage("assets/home/home_image.png"),
+                      image: AssetImage("assets/home/angular.png"),
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  """Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s...""",
+                  "Angular es un framework de desarrollo web de código abierto, mantenido por Google, que se utiliza para crear aplicaciones web de una sola página (SPA, por sus siglas en inglés). ",
                   textAlign: TextAlign.justify,
                 ),
                 const SizedBox(height: 20),
@@ -145,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: screenWidth * 0.4,
                         decoration: const BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage("assets/home/home_image.png"),
+                            image: AssetImage("assets/home/html.png"),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -156,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: screenWidth * 0.4,
                         decoration: const BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage("assets/home/home_image.png"),
+                            image: AssetImage("assets/home/css.png"),
                             fit: BoxFit.cover,
                           ),
                         ),

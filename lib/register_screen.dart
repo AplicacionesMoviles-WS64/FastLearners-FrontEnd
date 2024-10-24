@@ -48,8 +48,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() {
         _isLoading = true;
       });
-
-      // Simulación de un proceso de registro
       await Future.delayed(Duration(seconds: 2));
 
       setState(() {

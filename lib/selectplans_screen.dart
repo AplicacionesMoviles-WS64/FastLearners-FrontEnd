@@ -79,7 +79,7 @@ class SelectPlanScreenState extends State<SelectPlanScreen> {
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: Row(
                 children: [
-                  const Icon(Icons.check, color: Colors.green),  // Ícono cambiado a verde para mejor visibilidad
+                  const Icon(Icons.check, color: Colors.green),
                   const SizedBox(width: 8),
                   Text(
                     feature,

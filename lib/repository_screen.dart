@@ -1,4 +1,5 @@
 import 'package:fastlearners_frontend_flutter/profile_screen.dart';
+import 'package:fastlearners_frontend_flutter/viewrepositories_Screen.dart';
 import 'package:flutter/material.dart';
 import 'createrepository_screen.dart';
 import 'home_screen.dart';
@@ -48,7 +49,7 @@ class RepositoryScreen extends StatelessWidget {
           children: [
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Color.fromRGBO(189, 213, 234, 1),
               ),
               child: Text(
                 'Menú de navegación',
@@ -80,9 +81,15 @@ class RepositoryScreen extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: Icon(Icons.info),
-              title: Text('Acerca de'),
-              onTap: () {},
+              leading: Icon(Icons.create),
+              title: Text('Ver repositorios'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RepositoryListScreen()),
+                );
+              },
             ),
           ],
         ),
