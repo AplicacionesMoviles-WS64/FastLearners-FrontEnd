@@ -1,3 +1,4 @@
+import 'package:fastlearners_frontend_flutter/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'register_screen.dart';
 class LoginScreen extends StatefulWidget {
@@ -36,9 +37,14 @@ class _LoginScreenState extends State<LoginScreen> {
       String email = _emailController.text;
       String password = _passwordController.text;
 
+      Navigator
+          .pushReplacement(context,
+          MaterialPageRoute(builder: (context) => HomeScreen()));
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Iniciando sesión con $email')),
       );
+
     }
   }
 
@@ -52,8 +58,8 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                margin: EdgeInsets.only(bottom: 20),
-                child: Text(
+                margin: const EdgeInsets.only(bottom: 20),
+                child: const Text(
                   'Iniciar sesión',
                   style: TextStyle(
                     fontSize: 24,
@@ -62,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12.0),

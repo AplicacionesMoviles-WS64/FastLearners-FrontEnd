@@ -1,3 +1,4 @@
+import 'package:fastlearners_frontend_flutter/select_plans_screen.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -47,9 +48,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
       String email = _emailController.text;
       String password = _passwordController.text;
 
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SelectPlanScreen()));
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Registro exitoso para $firstName $lastName')),
       );
+
     }
   }
 
