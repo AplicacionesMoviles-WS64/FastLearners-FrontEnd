@@ -1,6 +1,7 @@
 import 'package:fastlearners_frontend_flutter/home_screen.dart';
 import 'package:flutter/material.dart';
 
+
 class SelectPlanScreen extends StatefulWidget {
   @override
   SelectPlanScreenState createState() => SelectPlanScreenState();
@@ -23,26 +24,26 @@ class SelectPlanScreenState extends State<SelectPlanScreen> {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pop(context);  // Cierra el diálogo
+              Navigator.pop(context); // Cierra el diálogo
             },
-            child: Text('Cancelar'),
+            child: const Text('Cancelar'),
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context);  // Cierra el diálogo
+              Navigator.pop(context); // Cierra el diálogo
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => HomeScreen()),
               );
             },
-            child: Text('Confirmar'),
+            child: const Text('Confirmar'),
           ),
         ],
       ),
     );
   }
 
-  Widget buildPlanCard(String title, String price, List<String> features) {
+  Widget buildPlanCard(String title, String price, List<Map<String, IconData>> features) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.all(16),
@@ -73,35 +74,31 @@ class SelectPlanScreenState extends State<SelectPlanScreen> {
           const Divider(thickness: 2.0, color: Colors.black),
           const SizedBox(height: 10),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: features
-                .map((feature) => Padding(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: features.map((feature) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: Row(
                 children: [
-                  const Icon(Icons.check, color: Colors.green),
+                  Icon(feature.values.first, color: Colors.black), // Íconos en negro
                   const SizedBox(width: 8),
                   Text(
-                    feature,
+                    feature.keys.first,
                     style: const TextStyle(fontSize: 18),
                   ),
                 ],
               ),
-            ))
-                .toList(),
+            )).toList(),
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () => buttonEvent(title),
+            onPressed: () => buttonEvent(title), // Al presionar se abre el diálogo
             child: const Text(
               "Elegir plan",
-              style: TextStyle(
-                  fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
             ),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color.fromRGBO(254, 95, 85, 1),
-              padding:
-              const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.0),
               ),
@@ -133,18 +130,33 @@ class SelectPlanScreenState extends State<SelectPlanScreen> {
               // Planes
               buildPlanCard(
                 "Plan Básico",
-                "S/.00.00",
-                ["Característica 1", "Característica 2", "Característica 3", "Característica 4"],
+                "S/.15.00",
+                [
+                  {"25 videos por mes": Icons.video_library},
+                  {"10 repositorios por mes": Icons.folder},
+                  {"Acceso a la documentación": Icons.book},
+                  {"Acceso al foro": Icons.forum},
+                ],
               ),
               buildPlanCard(
                 "Plan Estándar",
                 "S/.20.00",
-                ["Característica 1", "Característica 2", "Característica 3", "Característica 4"],
+                [
+                  {"50 videos por mes": Icons.video_library},
+                  {"20 repositorios por mes": Icons.folder},
+                  {"Acceso a la documentación": Icons.book},
+                  {"Acceso al foro": Icons.forum},
+                ],
               ),
               buildPlanCard(
                 "Plan Premium",
-                "S/.40.00",
-                ["Característica 1", "Característica 2", "Característica 3", "Característica 4"],
+                "S/.50.00",
+                [
+                  {"Videos ilimitados": Icons.video_library},
+                  {"Repositorios ilimitados": Icons.folder},
+                  {"Acceso a la documentación": Icons.book},
+                  {"Acceso al foro": Icons.forum},
+                ],
               ),
             ],
           ),
@@ -153,3 +165,4 @@ class SelectPlanScreenState extends State<SelectPlanScreen> {
     );
   }
 }
+
