@@ -10,7 +10,7 @@ class _UploadContentScreenState extends State<UploadContentScreen> {
   String? _title;
   String? _contentType;
   String? _description;
-  String? _visibility = 'Seleccionar'; // Valor inicial para la visibilidad
+  String? _visibility = 'Seleccionar';
   String? _collaborators;
   String? _repository;
 
@@ -18,7 +18,7 @@ class _UploadContentScreenState extends State<UploadContentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Subir contenido a FastLearners'),
+
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -94,11 +94,14 @@ class _UploadContentScreenState extends State<UploadContentScreen> {
               ElevatedButton(
                 onPressed: () {
                   // Acción para añadir archivos
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Función de añadir archivos aún no implementada')),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(254, 95, 85, 1),
+                  backgroundColor: Color.fromRGBO(254, 95, 85, 1),
                 ),
-                child: Text('Añadir archivos', style: TextStyle(color: Colors.black)),
+                child: Text('Añadir archivos', style: TextStyle(color: Colors.white)),
               ),
               SizedBox(height: 16),
               DropdownButtonFormField<String>(
@@ -107,7 +110,7 @@ class _UploadContentScreenState extends State<UploadContentScreen> {
                   border: OutlineInputBorder(),
                 ),
                 value: _visibility,
-                items: ['Público', 'Privado']
+                items: ['Seleccionar', 'Público', 'Privado']
                     .map((visibility) => DropdownMenuItem(
                   value: visibility,
                   child: Text(visibility),

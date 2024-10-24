@@ -1,3 +1,4 @@
+import 'package:fastlearners_frontend_flutter/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'repository_screen.dart'; // Asegúrate de importar la pantalla del repositorio
@@ -50,6 +51,11 @@ class _CreateRepositoryScreenState extends State<CreateRepositoryScreen> {
           IconButton(
             icon: Icon(Icons.person),
             onPressed: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UserProfileScreen(userName: '', email: '',)),
+              );
             },
           ),
         ],
@@ -81,9 +87,15 @@ class _CreateRepositoryScreenState extends State<CreateRepositoryScreen> {
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Configuración'),
-              onTap: () {},
+              leading: Icon(Icons.create),
+              title: Text('Crear repositorio'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateRepositoryScreen()),
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.info),

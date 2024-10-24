@@ -1,4 +1,7 @@
+import 'package:fastlearners_frontend_flutter/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'createrepository_screen.dart';
+import 'home_screen.dart';
 import 'uploadcontent_screen.dart';
 
 class RepositoryScreen extends StatelessWidget {
@@ -26,7 +29,63 @@ class RepositoryScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Repositorio: $repositoryName'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.person),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UserProfileScreen(userName: '', email: '',)),
+              );
+            },
+          ),
+        ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(
+                'Menú de navegación',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Página de inicio'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.create),
+              title: Text('Crear repositorio'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateRepositoryScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.info),
+              title: Text('Acerca de'),
+              onTap: () {},
+            ),
+          ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -34,10 +93,6 @@ class RepositoryScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Nombre del Repositorio:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
               Text(
                 repositoryName,
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),

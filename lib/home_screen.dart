@@ -1,3 +1,4 @@
+import 'package:fastlearners_frontend_flutter/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'createrepository_screen.dart';
 
@@ -19,8 +20,10 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: Icon(Icons.person),
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Perfil/Configuración')),
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UserProfileScreen(userName: '', email: '',)),
               );
             },
           ),
