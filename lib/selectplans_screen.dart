@@ -1,4 +1,5 @@
 import 'package:fastlearners_frontend_flutter/home_screen.dart';
+import 'package:fastlearners_frontend_flutter/pay_method_screen.dart';
 import 'package:flutter/material.dart';
 
 
@@ -33,7 +34,7 @@ class SelectPlanScreenState extends State<SelectPlanScreen> {
               Navigator.pop(context); // Cierra el diálogo
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => HomeScreen()),
+                MaterialPageRoute(builder: (context) => PayMethodScreen()),
               );
             },
             child: const Text('Confirmar'),
