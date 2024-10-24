@@ -76,6 +76,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
             ),
+            ListTile(
+              leading: Icon(Icons.forum),
+              title: Text('Foro de la comunidad'), // Nueva opción
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CommunityForum()), // Navegar a CommunityForum
+                );
+              },
+            ),
           ],
         ),
       ),
