@@ -1,6 +1,7 @@
 import 'package:fastlearners_frontend_flutter/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'register_screen.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -10,6 +11,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isPasswordVisible = false;
+  bool _isLoading = false;
 
   String? _validateEmail(String? value) {
     if (value == null || value.isEmpty) {
@@ -32,19 +35,24 @@ class _LoginScreenState extends State<LoginScreen> {
     return null;
   }
 
-  void _login() {
+  void _login() async {
     if (_formKey.currentState!.validate()) {
-      String email = _emailController.text;
-      String password = _passwordController.text;
+      setState(() {
+        _isLoading = true;
+      });
+      await Future.delayed(Duration(seconds: 2)); // Simulación de autenticación
 
-      Navigator
-          .pushReplacement(context,
-          MaterialPageRoute(builder: (context) => HomeScreen()));
+      setState(() {
+        _isLoading = false;
+      });
+
+      // Navegación a la pantalla principal
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Iniciando sesión con $email')),
+        SnackBar(content: Text('Iniciando sesión con ${_emailController.text}')),
       );
-
     }
   }
 
@@ -58,17 +66,14 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                  width: 180,
-                  height: 180,
-                  decoration:
-                  const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/home/LogoPrincipalv2.png"),
-                          fit: BoxFit.cover)
-                  )
+                width: 180,
+                height: 180,
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/home/LogoPrincipalv2.png"),
+                        fit: BoxFit.cover)),
               ),
               SizedBox(height: 16),
-
               Container(
                 margin: const EdgeInsets.only(bottom: 20),
                 child: const Text(
@@ -80,7 +85,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+                padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12.0),
@@ -108,6 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           keyboardType: TextInputType.emailAddress,
+                          autofocus: true,
                           validator: _validateEmail,
                         ),
                       ),
@@ -120,19 +127,37 @@ class _LoginScreenState extends State<LoginScreen> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12.0),
                             ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isPasswordVisible = !_isPasswordVisible;
+                                });
+                              },
+                            ),
                           ),
-                          obscureText: true,
+                          obscureText: !_isPasswordVisible,
                           validator: _validatePassword,
                         ),
                       ),
                       Container(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: _login,
-                          child: Text('Iniciar sesión'),
+                          onPressed: _isLoading ? null : _login,
+                          child: _isLoading
+                              ? CircularProgressIndicator(
+                            valueColor:
+                            AlwaysStoppedAnimation<Color>(Colors.white),
+                          )
+                              : Text('Iniciar sesión'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color.fromRGBO(254, 95, 85, 1),
-                            padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 32.0, vertical: 12.0),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12.0),
                             ),
@@ -143,7 +168,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-
               SizedBox(height: 16),
               Container(
                 child: Row(
@@ -154,7 +178,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => RegisterScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => RegisterScreen()),
                         );
                       },
                       child: Text(
@@ -169,7 +194,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     GestureDetector(
                       onTap: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Opción de olvido su contraseña')),
+                          SnackBar(
+                              content: Text('Opción de olvido su contraseña')),
                         );
                       },
                       child: Text(

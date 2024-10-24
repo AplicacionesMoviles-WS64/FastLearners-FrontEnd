@@ -1,4 +1,4 @@
-import 'package:fastlearners_frontend_flutter/select_plans_screen.dart';
+import 'package:fastlearners_frontend_flutter/selectplans_screen.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -12,6 +12,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isPasswordVisible = false;
+  bool _isLoading = false;
 
   String? _validateName(String? value) {
     if (value == null || value.isEmpty) {
@@ -41,18 +43,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return null;
   }
 
-  void _register() {
+  void _register() async {
     if (_formKey.currentState!.validate()) {
-      String firstName = _firstNameController.text;
-      String lastName = _lastNameController.text;
-      String email = _emailController.text;
-      String password = _passwordController.text;
+      setState(() {
+        _isLoading = true;
+      });
+
+      // Simulación de un proceso de registro
+      await Future.delayed(Duration(seconds: 2));
+
+      setState(() {
+        _isLoading = false;
+      });
 
       Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => SelectPlanScreen()));
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registro exitoso para $firstName $lastName')),
+        SnackBar(content: Text('Registro exitoso para ${_firstNameController.text} ${_lastNameController.text}')),
       );
     }
   }
@@ -80,7 +88,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               SizedBox(height: 16),
-              // Título
               Text(
                 'Registrarse',
                 style: TextStyle(
@@ -89,8 +96,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
               SizedBox(height: 20),
-
-              // Formulario
               Form(
                 key: _formKey,
                 child: Column(
@@ -105,6 +110,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                         ),
+                        autofocus: true,
                         validator: _validateName,
                       ),
                     ),
@@ -144,19 +150,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
                           ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
+                          ),
                         ),
-                        obscureText: true,
+                        obscureText: !_isPasswordVisible,
                         validator: _validatePassword,
                       ),
                     ),
-
-                    // Botón de registro utilizando ElevatedButton directamente
                     ElevatedButton(
-                      onPressed: _register,
-                      child: Text('Registrarse', style: TextStyle(color: Colors.white)),
+                      onPressed: _isLoading ? null : _register,
+                      child: _isLoading
+                          ? CircularProgressIndicator(
+                        valueColor:
+                        AlwaysStoppedAnimation<Color>(Colors.white),
+                      )
+                          : Text('Registrarse', style: TextStyle(color: Colors.white)),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromRGBO(254, 95, 85, 1),
-                        padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 32.0, vertical: 12.0),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.0),
                         ),
