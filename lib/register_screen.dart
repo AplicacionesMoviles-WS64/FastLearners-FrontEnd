@@ -54,7 +54,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Registro exitoso para $firstName $lastName')),
       );
-
     }
   }
 
@@ -70,6 +69,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Container(
+                width: 180,
+                height: 180,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/home/LogoPrincipalv2.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              SizedBox(height: 16),
               // Título
               Text(
                 'Registrarse',
@@ -98,7 +108,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         validator: _validateName,
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16.0),
                       child: TextFormField(
@@ -112,7 +121,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         validator: _validateName,
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16.0),
                       child: TextFormField(
@@ -127,7 +135,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         validator: _validateEmail,
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16.0),
                       child: TextFormField(
@@ -143,19 +150,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
 
-                    // Botón de registro
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: _register,
-                        child: Text('Registrarse'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromRGBO(254, 95, 85, 1),
-                          padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
+                    // Botón de registro utilizando ElevatedButton directamente
+                    ElevatedButton(
+                      onPressed: _register,
+                      child: Text('Registrarse', style: TextStyle(color: Colors.white)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromRGBO(254, 95, 85, 1),
+                        padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
                         ),
+                        minimumSize: Size(double.infinity, 50),
                       ),
                     ),
                   ],

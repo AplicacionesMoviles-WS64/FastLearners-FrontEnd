@@ -1,4 +1,4 @@
-#Sun Oct 20 17:12:26 PET 2024
+#Thu Oct 24 10:54:51 PET 2024
 base.0=/Users/marco/development/FastLearners-FrontEnd/build/app/intermediates/dex/debug/mergeExtDexDebug/classes.dex
 base.1=/Users/marco/development/FastLearners-FrontEnd/build/app/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex
 base.2=/Users/marco/development/FastLearners-FrontEnd/build/app/intermediates/dex/debug/mergeProjectDexDebug/1/classes.dex

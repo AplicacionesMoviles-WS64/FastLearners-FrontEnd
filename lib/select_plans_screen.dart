@@ -1,267 +1,123 @@
+import 'package:fastlearners_frontend_flutter/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-class SelectPlanScreen extends StatefulWidget{
 
+class SelectPlanScreen extends StatefulWidget {
   @override
   SelectPlanScreenState createState() => SelectPlanScreenState();
 }
 
+class SelectPlanScreenState extends State<SelectPlanScreen> {
+  buttonEvent() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()));
 
-class SelectPlanScreenState extends State<SelectPlanScreen>{
+  }
+  Widget buildPlanCard(String title, String price, List<String> features) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color.fromRGBO(189, 213, 234, 1),
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 3,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            price,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 42),
+          ),
+          const Divider(thickness: 2.0, color: Colors.black),
+          const SizedBox(height: 10),
 
-
-   buttonEvent(){
-     
-   }
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: features.map((feature) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: Row(
+                children: [
+                  const Icon(Icons.check, color: Colors.white),
+                  const SizedBox(width: 8),
+                  Text(
+                    feature,
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                ],
+              ),
+            )).toList(),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: buttonEvent,
+            child: const Text(
+              "Elegir plan",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromRGBO(254, 95, 85, 1),
+              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              elevation: 5,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-        appBar: AppBar(
-        title: Text('Planes')
-        ), 
-        body: Center(child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center, 
-                children: [
-                  const Text("Planes disponibles!",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
-                  SizedBox(height: 20),
-                  Container(
-                    height: 350,
-                    width: 350,
-                    decoration: BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.circular(10)
-                    ),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 10),
-                        const Text("Lorem ipsum", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
-
-                        Container(
-                          padding: const EdgeInsets.only(left: 10, top: 15),
-                          alignment: Alignment.centerLeft,
-                          child: const Text("S/.00.00", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 42))),
-                        const Divider(
-                          thickness: 2.0,
-                          indent: 15.0,
-                          endIndent: 15.0,
-                          color: Colors.black
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(left: 14, top: 10),
-                          child: Row(
-                            children: [
-                              Row(children: [
-                                Container(width: 15, height: 15, color: Colors.white),
-                                const SizedBox(width: 8),
-                                const Text("Lorem impsum", style: TextStyle(fontSize: 18))
-                              ]),
-                              ]
-                          )
-                        ),
-                        Container(
-                            padding: const EdgeInsets.only(left: 14, top: 5),
-                            child: Row(
-                                children: [
-                                  Row(children: [
-                                    Container(width: 15, height: 15, color: Colors.white),
-                                    const SizedBox(width: 8),
-                                    const Text("Lorem impsum", style: TextStyle(fontSize: 18))
-                                  ]),
-                                ]
-                            )
-                        ),
-                        Container(
-                            padding: const EdgeInsets.only(left: 14, top: 5),
-                            child: Row(
-                                children: [
-                                  Row(children: [
-                                    Container(width: 15, height: 15, color: Colors.white),
-                                    const SizedBox(width: 8),
-                                    const Text("Lorem impsum", style: TextStyle(fontSize: 18))
-                                  ]),
-                                ]
-                            )
-                        ),
-                        Container(
-                            padding: const EdgeInsets.only(left: 14, top: 5),
-                            child: Row(
-                                children: [
-                                  Row(children: [
-                                    Container(width: 15, height: 15, color: Colors.white),
-                                    const SizedBox(width: 8),
-                                    const Text("Lorem impsum", style: TextStyle(fontSize: 18))
-                                  ]),
-                                ]
-                            )
-                        ),
-                        SizedBox(height: 20),
-                        ElevatedButton(onPressed: buttonEvent, child: Text("Elegir plan"))
-                      ]
-                    )
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                      height: 350,
-                      width: 350,
-                      decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: Column(
-                          children: [
-                            const SizedBox(height: 10),
-                            const Text("Lorem ipsum", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
-
-                            Container(
-                                padding: const EdgeInsets.only(left: 10, top: 15),
-                                alignment: Alignment.centerLeft,
-                                child: const Text("S/.00.00", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 42))),
-                            const Divider(
-                                thickness: 2.0,
-                                indent: 15.0,
-                                endIndent: 15.0,
-                                color: Colors.black
-                            ),
-                            Container(
-                                padding: const EdgeInsets.only(left: 14, top: 10),
-                                child: Row(
-                                    children: [
-                                      Row(children: [
-                                        Container(width: 15, height: 15, color: Colors.white),
-                                        const SizedBox(width: 8),
-                                        const Text("Lorem impsum", style: TextStyle(fontSize: 18))
-                                      ]),
-                                    ]
-                                )
-                            ),
-                            Container(
-                                padding: const EdgeInsets.only(left: 14, top: 5),
-                                child: Row(
-                                    children: [
-                                      Row(children: [
-                                        Container(width: 15, height: 15, color: Colors.white),
-                                        const SizedBox(width: 8),
-                                        const Text("Lorem impsum", style: TextStyle(fontSize: 18))
-                                      ]),
-                                    ]
-                                )
-                            ),
-                            Container(
-                                padding: const EdgeInsets.only(left: 14, top: 5),
-                                child: Row(
-                                    children: [
-                                      Row(children: [
-                                        Container(width: 15, height: 15, color: Colors.white),
-                                        const SizedBox(width: 8),
-                                        const Text("Lorem impsum", style: TextStyle(fontSize: 18))
-                                      ]),
-                                    ]
-                                )
-                            ),
-                            Container(
-                                padding: const EdgeInsets.only(left: 14, top: 5),
-                                child: Row(
-                                    children: [
-                                      Row(children: [
-                                        Container(width: 15, height: 15, color: Colors.white),
-                                        const SizedBox(width: 8),
-                                        const Text("Lorem impsum", style: TextStyle(fontSize: 18))
-                                      ]),
-                                    ]
-                                )
-                            ),
-                            SizedBox(height: 20),
-                            ElevatedButton(onPressed: buttonEvent, child: Text("Elegir plan"))
-                          ]
-                      )
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                      height: 350,
-                      width: 350,
-                      decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: Column(
-                          children: [
-                            const SizedBox(height: 10),
-                            const Text("Lorem ipsum", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
-
-                            Container(
-                                padding: const EdgeInsets.only(left: 10, top: 15),
-                                alignment: Alignment.centerLeft,
-                                child: const Text("S/.00.00", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 42))),
-                            const Divider(
-                                thickness: 2.0,
-                                indent: 15.0,
-                                endIndent: 15.0,
-                                color: Colors.black
-                            ),
-                            Container(
-                                padding: const EdgeInsets.only(left: 14, top: 10),
-                                child: Row(
-                                    children: [
-                                      Row(children: [
-                                        Container(width: 15, height: 15, color: Colors.white),
-                                        const SizedBox(width: 8),
-                                        const Text("Lorem impsum", style: TextStyle(fontSize: 18))
-                                      ]),
-                                    ]
-                                )
-                            ),
-                            Container(
-                                padding: const EdgeInsets.only(left: 14, top: 5),
-                                child: Row(
-                                    children: [
-                                      Row(children: [
-                                        Container(width: 15, height: 15, color: Colors.white),
-                                        const SizedBox(width: 8),
-                                        const Text("Lorem impsum", style: TextStyle(fontSize: 18))
-                                      ]),
-                                    ]
-                                )
-                            ),
-                            Container(
-                                padding: const EdgeInsets.only(left: 14, top: 5),
-                                child: Row(
-                                    children: [
-                                      Row(children: [
-                                        Container(width: 15, height: 15, color: Colors.white),
-                                        const SizedBox(width: 8),
-                                        const Text("Lorem impsum", style: TextStyle(fontSize: 18))
-                                      ]),
-                                    ]
-                                )
-                            ),
-                            Container(
-                                padding: const EdgeInsets.only(left: 14, top: 5),
-                                child: Row(
-                                    children: [
-                                      Row(children: [
-                                        Container(width: 15, height: 15, color: Colors.white),
-                                        const SizedBox(width: 8),
-                                        const Text("Lorem impsum", style: TextStyle(fontSize: 18))
-                                      ]),
-                                    ]
-                                )
-                            ),
-                            SizedBox(height: 20),
-                            ElevatedButton(onPressed: buttonEvent, child: Text("Elegir plan"))
-                          ]
-                      )
-                  )
-
-                ]
-            )
-        )
-        )
+      appBar: AppBar(
+        title: const Text('Planes'),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                "Planes disponibles!",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+              ),
+              const SizedBox(height: 20),
+              // Planes
+              buildPlanCard(
+                "Plan Básico",
+                "S/.00.00",
+                ["Característica 1", "Característica 2", "Característica 3", "Característica 4"],
+              ),
+              buildPlanCard(
+                "Plan Estándar",
+                "S/.20.00",
+                ["Característica 1", "Característica 2", "Característica 3", "Característica 4"],
+              ),
+              buildPlanCard(
+                "Plan Premium",
+                "S/.40.00",
+                ["Característica 1", "Característica 2", "Característica 3", "Característica 4"],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
-
   }
 }

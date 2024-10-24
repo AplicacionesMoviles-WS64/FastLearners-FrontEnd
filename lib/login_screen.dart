@@ -58,6 +58,18 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
+                  width: 180,
+                  height: 180,
+                  decoration:
+                  const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("assets/home/LogoPrincipalv2.png"),
+                          fit: BoxFit.cover)
+                  )
+              ),
+              SizedBox(height: 16),
+
+              Container(
                 margin: const EdgeInsets.only(bottom: 20),
                 child: const Text(
                   'Iniciar sesión',
