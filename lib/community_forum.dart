@@ -1,12 +1,89 @@
+import 'package:fastlearners_frontend_flutter/profile_screen.dart';
+import 'package:fastlearners_frontend_flutter/viewrepositories_Screen.dart';
 import 'package:flutter/material.dart';
+
+import 'createrepository_screen.dart';
+import 'home_screen.dart';
 
 class CommunityForum extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Foro de la comunidad'),
-        backgroundColor: const Color.fromRGBO(189, 213, 234, 1),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.person),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UserProfileScreen(userName: '', email: '',)),
+              );
+            },
+          ),
+        ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                  color: Color.fromRGBO(189, 213, 234, 1)
+              ),
+              child: Text(
+                'Menú de navegación',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Página de inicio'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.create),
+              title: Text('Crear repositorio'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateRepositoryScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.create),
+              title: Text('Ver repositorios'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RepositoryListScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.forum),
+              title: Text('Foro de la comunidad'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CommunityForum()),
+                );
+              },
+            ),
+          ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

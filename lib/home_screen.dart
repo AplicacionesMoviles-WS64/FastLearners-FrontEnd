@@ -1,6 +1,7 @@
 import 'package:fastlearners_frontend_flutter/profile_screen.dart';
 import 'package:fastlearners_frontend_flutter/viewrepositories_Screen.dart';
 import 'package:flutter/material.dart';
+import 'community_forum.dart';
 import 'createrepository_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -78,12 +79,12 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ListTile(
               leading: Icon(Icons.forum),
-              title: Text('Foro de la comunidad'), // Nueva opción
+              title: Text('Foro de la comunidad'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CommunityForum()), // Navegar a CommunityForum
+                  MaterialPageRoute(builder: (context) => CommunityForum()),
                 );
               },
             ),

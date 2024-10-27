@@ -1,6 +1,7 @@
 import 'package:fastlearners_frontend_flutter/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'createrepository_screen.dart';
+import 'home_screen.dart';
 import 'repository_screen.dart';
 
 class RepositoryListScreen extends StatelessWidget {
@@ -66,8 +67,10 @@ class RepositoryListScreen extends StatelessWidget {
               leading: Icon(Icons.home),
               title: Text('Página de inicio'),
               onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/home');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                );
               },
             ),
             ListTile(
