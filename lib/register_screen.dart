@@ -1,5 +1,7 @@
-import 'package:fastlearners_frontend_flutter/selectplans_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fastlearners_frontend_flutter/selectplans_screen.dart';
+import '../modelo/usuarios.dart';
+import 'database/db.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -14,6 +16,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
   bool _isLoading = false;
+  final DB _databaseHelper = DB();
 
   String? _validateName(String? value) {
     if (value == null || value.isEmpty) {
@@ -48,15 +51,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() {
         _isLoading = true;
       });
-      await Future.delayed(Duration(seconds: 2));
+
+      // Crear un nuevo objeto Usuario con los datos del formulario
+      Usuario newUser = Usuario(
+        nombre: "${_firstNameController.text} ${_lastNameController.text}",
+        correo: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      // Insertar el usuario en la base de datos
+      await _databaseHelper.insertUser(newUser);
 
       setState(() {
         _isLoading = false;
       });
 
+      // Navegar a la siguiente pantalla después de un registro exitoso
       Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => SelectPlanScreen()));
+
+      // Mostrar mensaje de éxito
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Registro exitoso para ${_firstNameController.text} ${_lastNameController.text}')),
       );
@@ -169,14 +184,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onPressed: _isLoading ? null : _register,
                       child: _isLoading
                           ? CircularProgressIndicator(
-                        valueColor:
-                        AlwaysStoppedAnimation<Color>(Colors.white),
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       )
                           : Text('Registrarse', style: TextStyle(color: Colors.white)),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromRGBO(254, 95, 85, 1),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 32.0, vertical: 12.0),
+                        padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.0),
                         ),

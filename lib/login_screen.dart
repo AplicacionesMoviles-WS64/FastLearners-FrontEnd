@@ -1,6 +1,8 @@
 import 'package:fastlearners_frontend_flutter/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'register_screen.dart';
+import '../database/db.dart';
+import '../modelo/usuarios.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -13,6 +15,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
   bool _isLoading = false;
+  final DB _databaseHelper = DB();
 
   String? _validateEmail(String? value) {
     if (value == null || value.isEmpty) {
@@ -40,19 +43,31 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isLoading = true;
       });
-      await Future.delayed(Duration(seconds: 2)); // Simulación de autenticación
+
+      // Validar las credenciales con la base de datos
+      String correo = _emailController.text;
+      String password = _passwordController.text;
+
+      Usuario? usuario = await _databaseHelper.getUserByCredentials(correo, password);
 
       setState(() {
         _isLoading = false;
       });
 
-      // Navegación a la pantalla principal
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      if (usuario != null) {
+        // Si las credenciales son correctas, navegar a la pantalla principal
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomeScreen()));
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Iniciando sesión con ${_emailController.text}')),
-      );
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Bienvenido, ${usuario.nombre}!')),
+        );
+      } else {
+        // Mostrar error si las credenciales no son válidas
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Correo o contraseña incorrectos')),
+        );
+      }
     }
   }
 
@@ -85,8 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               Container(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12.0),
@@ -150,8 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: _isLoading ? null : _login,
                           child: _isLoading
                               ? CircularProgressIndicator(
-                            valueColor:
-                            AlwaysStoppedAnimation<Color>(Colors.white),
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                           )
                               : Text('Iniciar sesión'),
                           style: ElevatedButton.styleFrom(
