@@ -52,26 +52,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _isLoading = true;
       });
 
-      // Crear un nuevo objeto Usuario con los datos del formulario
+
       Usuario newUser = Usuario(
         nombre: "${_firstNameController.text} ${_lastNameController.text}",
         correo: _emailController.text,
         password: _passwordController.text,
       );
 
-      // Insertar el usuario en la base de datos
+
       await _databaseHelper.insertUser(newUser);
 
       setState(() {
         _isLoading = false;
       });
 
-      // Navegar a la siguiente pantalla después de un registro exitoso
+
       Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SelectPlanScreen()));
+          MaterialPageRoute(builder: (context) => SelectPlanScreen(email: _emailController.text)));
 
-      // Mostrar mensaje de éxito
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Registro exitoso para ${_firstNameController.text} ${_lastNameController.text}')),
       );

@@ -44,7 +44,6 @@ class _LoginScreenState extends State<LoginScreen> {
         _isLoading = true;
       });
 
-      // Validar las credenciales con la base de datos
       String correo = _emailController.text;
       String password = _passwordController.text;
 
@@ -55,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       if (usuario != null) {
-        // Si las credenciales son correctas, navegar a la pantalla principal
+
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => HomeScreen()));
 
@@ -63,7 +62,6 @@ class _LoginScreenState extends State<LoginScreen> {
           SnackBar(content: Text('Bienvenido, ${usuario.nombre}!')),
         );
       } else {
-        // Mostrar error si las credenciales no son válidas
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Correo o contraseña incorrectos')),
         );

@@ -1,22 +1,24 @@
-import 'package:fastlearners_frontend_flutter/home_screen.dart';
-import 'package:fastlearners_frontend_flutter/pay_method_screen.dart';
 import 'package:flutter/material.dart';
-
+import 'package:fastlearners_frontend_flutter/pay_method_screen.dart';
+import 'database/db.dart';
 
 class SelectPlanScreen extends StatefulWidget {
+  final String email;
+
+  SelectPlanScreen({required this.email});
+
   @override
   SelectPlanScreenState createState() => SelectPlanScreenState();
 }
 
 class SelectPlanScreenState extends State<SelectPlanScreen> {
+  final DB _databaseHelper = DB();
   String selectedPlan = "";
 
   void buttonEvent(String plan) {
     setState(() {
       selectedPlan = plan;
     });
-
-    // Diálogo de confirmación antes de redirigir al usuario
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -30,11 +32,23 @@ class SelectPlanScreenState extends State<SelectPlanScreen> {
             child: const Text('Cancelar'),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.pop(context); // Cierra el diálogo
+
+              // Actualizar el plan en la base de datos
+              try {
+                await _databaseHelper.updateUserPlan(widget.email, plan);
+                print("Plan actualizado exitosamente");
+              } catch (e) {
+                print("Error al actualizar el plan: $e");
+              }
+
+              // Navegar a PayMethodScreen y pasar el email
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => PayMethodScreen()),
+                MaterialPageRoute(
+                  builder: (context) => PayMethodScreen(email: widget.email),
+                ),
               );
             },
             child: const Text('Confirmar'),
@@ -80,7 +94,7 @@ class SelectPlanScreenState extends State<SelectPlanScreen> {
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: Row(
                 children: [
-                  Icon(feature.values.first, color: Colors.black), // Íconos en negro
+                  Icon(feature.values.first, color: Colors.black),
                   const SizedBox(width: 8),
                   Text(
                     feature.keys.first,
@@ -92,7 +106,7 @@ class SelectPlanScreenState extends State<SelectPlanScreen> {
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () => buttonEvent(title), // Al presionar se abre el diálogo
+            onPressed: () => buttonEvent(title),
             child: const Text(
               "Elegir plan",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
@@ -128,7 +142,6 @@ class SelectPlanScreenState extends State<SelectPlanScreen> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
               ),
               const SizedBox(height: 20),
-              // Planes
               buildPlanCard(
                 "Plan Básico",
                 "S/.15.00",
@@ -166,4 +179,3 @@ class SelectPlanScreenState extends State<SelectPlanScreen> {
     );
   }
 }
-

@@ -1,30 +1,31 @@
 class Usuario {
-  int? id;
-  String nombre;
-  String correo;
-  String password;
+  final String nombre;
+  final String correo;
+  final String password;
+  final String? plan;
 
   Usuario({
-    this.id,
     required this.nombre,
     required this.correo,
     required this.password,
+    this.plan,
   });
 
-  // Convertir el objeto Usuario a un Map para guardar en la base de datos
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'nombre': nombre,
       'correo': correo,
       'password': password,
+      'plan': plan,
     };
   }
 
-  // Crear un objeto Usuario a partir de un Map proveniente de la base de datos
-  Usuario.fromMap(Map<String, dynamic> res)
-      : id = res["id"],
-        nombre = res["nombre"],
-        correo = res["correo"],
-        password = res["password"];
+  factory Usuario.fromMap(Map<String, dynamic> map) {
+    return Usuario(
+      nombre: map['nombre'],
+      correo: map['correo'],
+      password: map['password'],
+      plan: map['plan'],
+    );
+  }
 }

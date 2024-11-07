@@ -1,8 +1,13 @@
 import 'package:fastlearners_frontend_flutter/home_screen.dart';
 import 'package:fastlearners_frontend_flutter/login_screen.dart';
 import 'package:flutter/material.dart';
-
+import '../database/db.dart';
+import 'modelo/creditCard.dart';
 class PayMethodScreen extends StatefulWidget {
+  final String email;
+
+  PayMethodScreen({required this.email});
+
   @override
   _PayMethodScreenState createState() => _PayMethodScreenState();
 }
@@ -15,8 +20,21 @@ class _PayMethodScreenState extends State<PayMethodScreen> {
   final TextEditingController _dateExpireController = TextEditingController();
   final TextEditingController _securityNumberController = TextEditingController();
   final TextEditingController _cardNicknameController = TextEditingController();
-  bool _isCardNicknameVisible = false;
   bool _isLoading = false;
+  late Future<List<CreditCard>> _creditCardsFuture;
+  final DB _db = DB();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCreditCards();
+  }
+
+  void _loadCreditCards() {
+    setState(() {
+      _creditCardsFuture = _db.getAllCreditCards();
+    });
+  }
 
   String? _validateNameTitle(String? value) {
     if (value == null || value.isEmpty) {
@@ -27,6 +45,16 @@ class _PayMethodScreenState extends State<PayMethodScreen> {
 
   String? _validateNumberCard(String? value) {
     if (value == null || value.isEmpty) {
+      return 'El número de tarjeta es requerido';
+    }
+    if (value.length != 16) {
+      return 'Debe contener 16 dígitos';
+    }
+    return null;
+  }
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
       return 'El correo es requerido';
     }
     final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
@@ -36,50 +64,56 @@ class _PayMethodScreenState extends State<PayMethodScreen> {
     return null;
   }
 
-  String? _validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'La contraseña es requerida';
-    }
-    if (value.length < 6) {
-      return 'Mínimo 6 caracteres';
-    }
-    return null;
-  }
   String? _validateDateExpire(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'La fecha de expiración es requerida';
+    }
     return null;
   }
+
   String? _validateSecurityNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'El código de seguridad es requerido';
+    }
+    if (value.length != 3) {
+      return 'Debe contener 3 dígitos';
+    }
     return null;
   }
 
-
-  String? _validateCardNickname(String? value) {
-   return null;
-  }
   void _register() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
 
-      await Future.delayed(Duration(seconds: 2));
+      final newCard = CreditCard(
+        cardNumber: _numberCardController.text,
+        cardHolderName: _titleNameController.text,
+        expirationDate: _dateExpireController.text,
+        cvv: _securityNumberController.text,
+        nickname: _cardNicknameController.text.isNotEmpty ? _cardNicknameController.text : null,
+      );
+
+      await _db.insertCreditCard(newCard);
 
       setState(() {
         _isLoading = false;
+        _loadCreditCards();
       });
 
-      Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomeScreen()));
+      _formKey.currentState!.reset();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registro exitoso')),
+        SnackBar(content: Text('Tarjeta registrada exitosamente')),
       );
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Payment Methods"),
@@ -87,156 +121,136 @@ class _PayMethodScreenState extends State<PayMethodScreen> {
       body: Center(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(16.0),
-          child:  Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(bottom: 20.0),
-                  child: Text(
-                    'Añadir pago por tarjeta',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.only(bottom: 20.0),
+                child: Text(
+                  'Añadir pago por tarjeta',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-
-                Form(
-                    key: _formKey,
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 16.0),
-                          child: TextFormField(
-                            controller: _titleNameController,
-                            decoration: InputDecoration(
-                              labelText: 'Numero del titular',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                            ),
-                            autofocus: true,
-                            validator: _validateNameTitle,
+              ),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16.0),
+                      child: TextFormField(
+                        controller: _titleNameController,
+                        decoration: InputDecoration(
+                          labelText: 'Nombre del titular',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 16.0),
-                          child: TextFormField(
-                            controller: _numberCardController,
-                            decoration: InputDecoration(
-                              labelText: 'Numero de la tarjeta',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                            ),
-                            validator: _validateNumberCard,
+                        validator: _validateNameTitle,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16.0),
+                      child: TextFormField(
+                        controller: _numberCardController,
+                        decoration: InputDecoration(
+                          labelText: 'Número de la tarjeta',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
                           ),
                         ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 20.0),
-                              child: SizedBox(
-                                width: 300,
-                                child: TextField(
-                                  controller: _dateExpireController,
-                                  decoration: InputDecoration(
-                                    labelText: 'Fecha de expiración',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12.0),
-                                    ),
+                        keyboardType: TextInputType.number,
+                        validator: _validateNumberCard,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 20.0),
+                            child: TextFormField(
+                              controller: _dateExpireController,
+                              decoration: InputDecoration(
+                                labelText: 'Fecha de expiración',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
                                 ),
-                                  keyboardType: TextInputType.datetime,
-                              )
-                            )
-                            ),
-                            Padding(
-                                padding: const EdgeInsets.only(left: 20.0, bottom: 20.0),
-                                child: SizedBox(
-                                    width: 300,
-                                    child: TextField(
-                                      controller: _securityNumberController,
-                                      decoration: InputDecoration(
-                                        labelText: 'Codigo de seguridad',
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12.0),
-                                        ),
-                                      ),
-                                    )
-                                )
-                            )
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 16.0),
-                          child: TextFormField(
-                            controller: _emailController,
-                            decoration: InputDecoration(
-                              labelText: 'Correo electrónico',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12.0),
                               ),
+                              keyboardType: TextInputType.datetime,
+                              validator: _validateDateExpire,
                             ),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: _validateEmail,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 16.0),
-                          child: TextFormField(
-                            controller: _cardNicknameController,
-                            decoration: InputDecoration(
-                              labelText: 'Apodo de tarjeta (opcional)',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12.0),
+                        SizedBox(width: 20),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 20.0),
+                            child: TextFormField(
+                              controller: _securityNumberController,
+                              decoration: InputDecoration(
+                                labelText: 'Código de seguridad',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
                               ),
+                              keyboardType: TextInputType.number,
+                              validator: _validateSecurityNumber,
                             ),
-                            obscureText: !_isCardNicknameVisible,
-                            validator: _validateCardNickname,
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: _isLoading ? null : _register,
-                          child: _isLoading
-                              ? CircularProgressIndicator(
-                            valueColor:
-                            AlwaysStoppedAnimation<Color>(Colors.white),
-                          )
-                              : const Text('Registrarse', style: TextStyle(color: Colors.black)),
-                        )
                       ],
                     ),
-
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16.0),
+                      child: TextFormField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                          labelText: 'Correo electrónico',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        validator: _validateEmail,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16.0),
+                      child: TextFormField(
+                        controller: _cardNicknameController,
+                        decoration: InputDecoration(
+                          labelText: 'Apodo de tarjeta (opcional)',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: _isLoading ? null : _register,
+                      child: _isLoading
+                          ? CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      )
+                          : Text('Registrarse', style: TextStyle(color: Colors.white)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromRGBO(254, 95, 85, 1),
+                        padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        minimumSize: Size(double.infinity, 50),
+                      ),
+                    ),
+                  ],
                 ),
-                Container(
-                    padding: EdgeInsets.only(top: 30.0),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginScreen()),
-                              );
-                            },
-                            child: const Text(
-                              '¿Ya tienes una cuenta? Inicia sesión aquí',
-                              style: TextStyle(
-                                color: Colors.blue,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          )
-                          ]
-                    )
-                )
-              ]
+              ),
+              SizedBox(height: 20),
+            ],
           ),
-        )
-      )
+        ),
+      ),
     );
   }
-
 }
