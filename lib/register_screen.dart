@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fastlearners_frontend_flutter/selectplans_screen.dart';
 import '../modelo/usuarios.dart';
-import 'database/db.dart';
+import 'database/api_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -9,14 +9,18 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+
   final _formKey = GlobalKey<FormState>();
+
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
   bool _isPasswordVisible = false;
   bool _isLoading = false;
-  final DB _databaseHelper = DB();
+
+  final APIService _apiService = APIService();
 
   String? _validateName(String? value) {
     if (value == null || value.isEmpty) {
@@ -60,7 +64,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
 
       // Insertar el usuario en la base de datos
-      await _databaseHelper.insertUser(newUser);
+      await _apiService.insertUser(newUser);
 
       setState(() {
         _isLoading = false;

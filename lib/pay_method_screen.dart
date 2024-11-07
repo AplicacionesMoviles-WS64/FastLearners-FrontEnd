@@ -27,21 +27,19 @@ class _PayMethodScreenState extends State<PayMethodScreen> {
 
   String? _validateNumberCard(String? value) {
     if (value == null || value.isEmpty) {
-      return 'El correo es requerido';
-    }
-    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-    if (!emailRegex.hasMatch(value)) {
-      return 'Ingresa un correo válido';
+      return 'El numero de tarjeta es requerido';
     }
     return null;
   }
 
   String? _validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return 'La contraseña es requerida';
+      return 'El correo es requerido';
     }
-    if (value.length < 6) {
-      return 'Mínimo 6 caracteres';
+
+    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+    if (!emailRegex.hasMatch(value)) {
+      return 'Ingresa un correo válido';
     }
     return null;
   }

@@ -1,7 +1,7 @@
 import 'package:fastlearners_frontend_flutter/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'register_screen.dart';
-import '../database/db.dart';
+import '../database/api_service.dart';
 import '../modelo/usuarios.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -11,19 +11,15 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
   bool _isLoading = false;
-  final DB _databaseHelper = DB();
+  final APIService _apiService = APIService();
 
-  String? _validateEmail(String? value) {
+  String? _validateUsername(String? value) {
     if (value == null || value.isEmpty) {
-      return 'El correo es requerido';
-    }
-    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-    if (!emailRegex.hasMatch(value)) {
-      return 'Ingresa un correo válido';
+      return 'El nombre usuario es requerido';
     }
     return null;
   }
@@ -45,10 +41,10 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       // Validar las credenciales con la base de datos
-      String correo = _emailController.text;
+      String username = _usernameController.text;
       String password = _passwordController.text;
 
-      Usuario? usuario = await _databaseHelper.getUserByCredentials(correo, password);
+      Usuario? usuario = await _apiService.getUserByCredentials(username, password);
 
       setState(() {
         _isLoading = false;
@@ -65,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         // Mostrar error si las credenciales no son válidas
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Correo o contraseña incorrectos')),
+          SnackBar(content: Text('Nombre de usuario o contraseña incorrectos')),
         );
       }
     }
@@ -120,16 +116,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       Container(
                         margin: EdgeInsets.only(bottom: 16),
                         child: TextFormField(
-                          controller: _emailController,
+                          controller: _usernameController,
                           decoration: InputDecoration(
-                            labelText: 'Correo electrónico',
+                            labelText: 'Nombre de usuario',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                           ),
-                          keyboardType: TextInputType.emailAddress,
                           autofocus: true,
-                          validator: _validateEmail,
+                          validator: _validateUsername,
                         ),
                       ),
                       Container(

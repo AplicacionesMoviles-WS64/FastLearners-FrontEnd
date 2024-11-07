@@ -1,32 +1,34 @@
+import 'package:fastlearners_frontend_flutter/modelo/repositorio.dart';
 import 'package:fastlearners_frontend_flutter/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'community_forum.dart';
 import 'createrepository_screen.dart';
+import 'database/api_service.dart';
 import 'home_screen.dart';
 import 'repository_screen.dart';
 
-class RepositoryListScreen extends StatelessWidget {
-  final List<Map<String, String>> repositories = [
-    {
-      'name': 'FastLearners',
-      'description': 'Repositorio principal de FastLearners',
-      'visibility': 'Público',
-    },
-    {
-      'name': 'Project Alpha',
-      'description': 'Repositorio del proyecto Alpha',
-      'visibility': 'Privado',
-    },
-    {
-      'name': 'Mobile App',
-      'description': 'Repositorio para la aplicación móvil',
-      'visibility': 'Público',
-    },
-    {
-      'name': 'Data Analysis',
-      'description': 'Repositorio de análisis de datos',
-      'visibility': 'Privado',
-    },
-  ];
+class RepositoryListScreen extends StatefulWidget {
+  @override
+  _RepositoryScreenState createState() => _RepositoryScreenState();
+}
+
+class _RepositoryScreenState extends State<RepositoryListScreen> {
+
+  final APIService _apiService = APIService();
+  List<Repositorio> repositories = [];
+
+  Future<void> _fetchRepositories() async {
+    var fetchedRepositories = await _apiService.getRepositories();
+    
+    setState(() {
+      repositories = fetchedRepositories;
+    });
+  }
+  @override
+  void initState() {
+    _fetchRepositories();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +97,17 @@ class RepositoryListScreen extends StatelessWidget {
                 );
               },
             ),
+            ListTile(
+              leading: Icon(Icons.forum),
+              title: Text('Foro de la comunidad'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CommunityForum()),
+                );
+              },
+            )
           ],
         ),
       ),
@@ -104,20 +117,20 @@ class RepositoryListScreen extends StatelessWidget {
           final repository = repositories[index];
           return Card(
             child: ListTile(
-              title: Text(repository['name']!),
-              subtitle: Text(repository['description']!),
-              trailing: Text(repository['visibility']!),
+              title: Text(repository.name),
+              subtitle: Text(repository.description),
+              trailing: Text(repository.visibility),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => RepositoryScreen(
-                      repositoryName: repository['name']!,
-                      description: repository['description']!,
-                      visibility: repository['visibility']!,
-                      includeReadme: true,
-                      includeGitignore: true,
-                      collaborators: 'Sin colaboradores',
+                      repositoryName: repository.name,
+                      description: repository.description,
+                      visibility: repository.visibility,
+                      includeReadme: repository.includeReadme,
+                      includeGitignore: repository.includeGitignore,
+                      collaborators: repository.collaborators,
                     ),
                   ),
                 );
@@ -128,4 +141,5 @@ class RepositoryListScreen extends StatelessWidget {
       ),
     );
   }
+
 }

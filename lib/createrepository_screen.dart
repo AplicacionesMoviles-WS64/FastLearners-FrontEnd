@@ -1,6 +1,9 @@
+import 'package:fastlearners_frontend_flutter/community_forum.dart';
+import 'package:fastlearners_frontend_flutter/modelo/repositorio.dart';
 import 'package:fastlearners_frontend_flutter/profile_screen.dart';
 import 'package:fastlearners_frontend_flutter/viewrepositories_Screen.dart';
 import 'package:flutter/material.dart';
+import 'database/api_service.dart';
 import 'home_screen.dart';
 import 'repository_screen.dart'; // Asegúrate de importar la pantalla del repositorio
 
@@ -10,6 +13,9 @@ class CreateRepositoryScreen extends StatefulWidget {
 }
 
 class _CreateRepositoryScreenState extends State<CreateRepositoryScreen> {
+
+  final APIService _apiService = APIService();
+
   final _formKey = GlobalKey<FormState>();
   String? _repositoryName;
   String? _description;
@@ -25,6 +31,17 @@ class _CreateRepositoryScreenState extends State<CreateRepositoryScreen> {
         SnackBar(content: Text('Repositorio "$_repositoryName" creado exitosamente')),
       );
 
+      final newRepo = Repositorio(
+        id: 0,
+        name: _repositoryName!,
+        description: _description ?? 'Sin descripción',
+        visibility: _visibility!,
+        includeReadme: _includeReadme,
+        includeGitignore: _includeGitignore,
+        collaborators: _collaborators ?? 'Sin colaboradores',
+      );
+      
+      _apiService.insertRepository(newRepo);
 
       Navigator.push(
         context,
@@ -108,6 +125,17 @@ class _CreateRepositoryScreenState extends State<CreateRepositoryScreen> {
                 );
               },
             ),
+            ListTile(
+              leading: Icon(Icons.forum),
+              title: Text('Foro de la comunidad'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CommunityForum()),
+                );
+              },
+            )
           ],
         ),
       ),

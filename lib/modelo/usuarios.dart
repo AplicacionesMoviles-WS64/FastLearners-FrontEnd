@@ -22,9 +22,9 @@ class Usuario {
   }
 
   // Crear un objeto Usuario a partir de un Map proveniente de la base de datos
-  Usuario.fromMap(Map<String, dynamic> res)
-      : id = res["id"],
+  Usuario.fromMap(Map<String, dynamic> res):
+        id = res["id"],
         nombre = res["nombre"],
-        correo = res["correo"],
-        password = res["password"];
+        correo = "",
+        password = "";
 }
