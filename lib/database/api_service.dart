@@ -65,7 +65,7 @@ class APIService {
         body: jsonEncode(repo.toMap()),
       );
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         print("Repositorio creado exitosamente");
       } else {
         print("Error al crear repositorio: ${response.statusCode}");
@@ -85,7 +85,9 @@ class APIService {
       if (response.statusCode == 200) {
 
         final List<dynamic> data = jsonDecode(response.body);
-        return data.map((map) => Repositorio.fromMap(map)).toList();
+        print(response.body);
+
+        return data.map((map) => Repositorio.fromMap(map)  ).toList();
 
       } else {
         print("Error al obtener repositorios: ${response.statusCode}");

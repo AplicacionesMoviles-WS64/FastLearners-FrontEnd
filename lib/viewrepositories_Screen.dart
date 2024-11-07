@@ -22,6 +22,7 @@ class _RepositoryScreenState extends State<RepositoryListScreen> {
     
     setState(() {
       repositories = fetchedRepositories;
+      print(repositories);
     });
   }
   @override

@@ -21,21 +21,25 @@ class Repositorio {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'nombre': name,
-      'descripcion': description,
-      'visibilidad': visibility,
-      'incluirReadme': includeReadme ? 1 : 0,
-      'incluirGitignore': includeGitignore ? 1 : 0,
-      'colaboradores': collaborators,
+      'name': name,
+      'description': description,
+      'visibility': visibility,
+      'includeReadme': includeReadme ? 1 : 0,
+      'includeGitignore': includeGitignore ? 1 : 0,
+      'collaborators': collaborators,
     };
   }
 
-  Repositorio.fromMap(Map<String, dynamic> map)
-      : id = map["id"],
-        name = map["nombre"],
-        description = map["descripcion"],
-        visibility = map["visibilidad"],
-        includeReadme = map["incluirReadme"] == 1,
-        includeGitignore = map["incluirGitignore"] == 1,
-        collaborators = map["colaboradores"];
+  static Repositorio fromMap(Map<String, dynamic> map) {
+    return Repositorio(
+      id: map["id"],
+      name: map["name"],
+      description: map["description"],
+      visibility: map["visibility"],
+      includeReadme: map["includeReadme"] == 1,
+      includeGitignore: map["includeGitignore"] == 1,
+      collaborators: map["collaborators"],
+    );
+
+  }
 }
