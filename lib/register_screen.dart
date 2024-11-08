@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fastlearners_frontend_flutter/selectplans_screen.dart';
-import '../modelo/usuarios.dart';
-import 'database/api_service.dart';
+import '../modelo/user.dart';
+import 'database/api_rest_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -20,11 +20,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _isPasswordVisible = false;
   bool _isLoading = false;
 
-  final APIService _apiService = APIService();
+  final ApiRestService _apiService = ApiRestService();
 
   String? _validateName(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Este campo es requerido';
+      return 'Los nombres son requeridos';
+    }
+    return null;
+  }
+
+  String? _validateLastName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Los apellidos son requeridos';
     }
     return null;
   }
@@ -57,9 +64,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       });
 
       // Crear un nuevo objeto Usuario con los datos del formulario
-      Usuario newUser = Usuario(
-        nombre: "${_firstNameController.text} ${_lastNameController.text}",
-        correo: _emailController.text,
+      User newUser = User(
+        name: "${_firstNameController.text} ${_lastNameController.text}",
+        email: _emailController.text,
         password: _passwordController.text,
       );
 
@@ -141,7 +148,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                         ),
-                        validator: _validateName,
+                        validator: _validateLastName,
                       ),
                     ),
                     Padding(

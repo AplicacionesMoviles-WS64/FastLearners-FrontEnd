@@ -1,21 +1,27 @@
 import 'dart:convert';
-import 'package:fastlearners_frontend_flutter/modelo/repositorio.dart';
-import 'package:fastlearners_frontend_flutter/modelo/usuarios.dart';
+import 'dart:ffi';
+import 'package:fastlearners_frontend_flutter/modelo/repository.dart';
+import 'package:fastlearners_frontend_flutter/modelo/user.dart';
 import 'package:http/http.dart' as http;
 
-class APIService {
+class ApiRestService {
 
   // Enlace del backend
   final String baseUrl = 'http://localhost:8080/api/v1';
 
-  Future<void> insertUser(Usuario usuario) async {
+  Future<void> insertUser(User user) async {
     final url = Uri.parse('$baseUrl/authentication/sign-up');
 
     try {
       var response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({"username": usuario.nombre, 'correo': usuario.correo, 'password': usuario.password, 'memberships' : ["BASIC"]}),
+        body: jsonEncode(
+            {
+              "username": user.name,
+              'email': user.email,
+              'password': user.password,
+              'memberships' : ["BASIC"]}),
       );
 
       if (response.statusCode == 201) {
@@ -28,23 +34,22 @@ class APIService {
     }
   }
 
-  Future<Usuario?> getUserByCredentials(String username, String password) async {
+  Future<User?> getUserByCredentials(String username, String password) async {
     final url = Uri.parse('$baseUrl/authentication/sign-in');
     try {
 
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'username': username, 'password': password}),
+        body: jsonEncode(
+            {
+              'username': username,
+              'password': password}),
       );
 
-      print(response.body);
-      
       if (response.statusCode == 200) {
-        var data = jsonDecode(response.body);
-        print("data: $data");
+        return User.fromMap(jsonDecode(response.body));
 
-        return new Usuario(nombre: username, correo: "", password: "");
       } else {
         print("Credenciales incorrectas o usuario no encontrado");
       }

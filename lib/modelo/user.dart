@@ -1,13 +1,13 @@
-class Usuario {
+class User {
   int? id;
-  String nombre;
-  String correo;
+  String name;
+  String email;
   String password;
 
-  Usuario({
+  User({
     this.id,
-    required this.nombre,
-    required this.correo,
+    required this.name,
+    required this.email,
     required this.password,
   });
 
@@ -15,16 +15,16 @@ class Usuario {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'nombre': nombre,
-      'correo': correo,
+      'name': name,
+      'email': email,
       'password': password,
     };
   }
 
   // Crear un objeto Usuario a partir de un Map proveniente de la base de datos
-  Usuario.fromMap(Map<String, dynamic> res):
+  User.fromMap(Map<String, dynamic> res):
         id = res["id"],
-        nombre = res["nombre"],
-        correo = "",
+        name = res["username"],
+        email = "",
         password = "";
 }

@@ -1,9 +1,9 @@
 import 'package:fastlearners_frontend_flutter/community_forum.dart';
-import 'package:fastlearners_frontend_flutter/modelo/repositorio.dart';
+import 'package:fastlearners_frontend_flutter/modelo/repository.dart';
 import 'package:fastlearners_frontend_flutter/profile_screen.dart';
 import 'package:fastlearners_frontend_flutter/viewrepositories_Screen.dart';
 import 'package:flutter/material.dart';
-import 'database/api_service.dart';
+import 'database/api_rest_service.dart';
 import 'home_screen.dart';
 import 'repository_screen.dart'; // Asegúrate de importar la pantalla del repositorio
 
@@ -14,14 +14,18 @@ class CreateRepositoryScreen extends StatefulWidget {
 
 class _CreateRepositoryScreenState extends State<CreateRepositoryScreen> {
 
-  final APIService _apiService = APIService();
+  final ApiRestService _apiService = ApiRestService();
 
   final _formKey = GlobalKey<FormState>();
+
   String? _repositoryName;
   String? _description;
   String? _visibility = 'Seleccionar'; // Valor inicial del Dropdown
+
   bool _includeReadme = false;
   bool _includeGitignore = false;
+
+
   String? _collaborators;
 
   void _createRepository(BuildContext context) {
@@ -191,7 +195,7 @@ class _CreateRepositoryScreenState extends State<CreateRepositoryScreen> {
                   border: OutlineInputBorder(),
                 ),
                 value: _visibility,
-                items: ['Seleccionar', 'Público', 'Privado']
+                items: ['Seleccionar', 'Publico', 'Privado']
                     .map((visibility) => DropdownMenuItem(
                   value: visibility,
                   child: Text(visibility),

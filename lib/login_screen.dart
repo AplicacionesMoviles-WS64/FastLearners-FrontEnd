@@ -1,8 +1,8 @@
 import 'package:fastlearners_frontend_flutter/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'register_screen.dart';
-import '../database/api_service.dart';
-import '../modelo/usuarios.dart';
+import '../database/api_rest_service.dart';
+import '../modelo/user.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -15,11 +15,11 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
   bool _isLoading = false;
-  final APIService _apiService = APIService();
+  final ApiRestService _apiService = ApiRestService();
 
   String? _validateUsername(String? value) {
     if (value == null || value.isEmpty) {
-      return 'El nombre usuario es requerido';
+      return 'El nombre de usuario es requerido';
     }
     return null;
   }
@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
       String username = _usernameController.text;
       String password = _passwordController.text;
 
-      Usuario? usuario = await _apiService.getUserByCredentials(username, password);
+      User? usuario = await _apiService.getUserByCredentials(username, password);
 
       setState(() {
         _isLoading = false;
@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
             context, MaterialPageRoute(builder: (context) => HomeScreen()));
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Bienvenido, ${usuario.nombre}!')),
+          SnackBar(content: Text('Bienvenido, ${usuario.name}!')),
         );
       } else {
         // Mostrar error si las credenciales no son válidas

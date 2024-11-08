@@ -1,9 +1,9 @@
-import 'package:fastlearners_frontend_flutter/modelo/repositorio.dart';
+import 'package:fastlearners_frontend_flutter/modelo/repository.dart';
 import 'package:fastlearners_frontend_flutter/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'community_forum.dart';
 import 'createrepository_screen.dart';
-import 'database/api_service.dart';
+import 'database/api_rest_service.dart';
 import 'home_screen.dart';
 import 'repository_screen.dart';
 
@@ -14,7 +14,7 @@ class RepositoryListScreen extends StatefulWidget {
 
 class _RepositoryScreenState extends State<RepositoryListScreen> {
 
-  final APIService _apiService = APIService();
+  final ApiRestService _apiService = ApiRestService();
   List<Repositorio> repositories = [];
 
   Future<void> _fetchRepositories() async {
@@ -22,7 +22,6 @@ class _RepositoryScreenState extends State<RepositoryListScreen> {
     
     setState(() {
       repositories = fetchedRepositories;
-      print(repositories);
     });
   }
   @override

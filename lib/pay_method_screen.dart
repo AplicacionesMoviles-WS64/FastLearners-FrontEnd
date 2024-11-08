@@ -8,14 +8,17 @@ class PayMethodScreen extends StatefulWidget {
 }
 
 class _PayMethodScreenState extends State<PayMethodScreen> {
+
   final _formKey = GlobalKey<FormState>();
+
   final TextEditingController _titleNameController = TextEditingController();
   final TextEditingController _numberCardController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _dateExpireController = TextEditingController();
   final TextEditingController _securityNumberController = TextEditingController();
   final TextEditingController _cardNicknameController = TextEditingController();
-  bool _isCardNicknameVisible = false;
+
+  final bool _isCardNicknameVisible = false;
   bool _isLoading = false;
 
   String? _validateNameTitle(String? value) {
@@ -43,10 +46,18 @@ class _PayMethodScreenState extends State<PayMethodScreen> {
     }
     return null;
   }
+
   String? _validateDateExpire(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'La fecha de expiración es requerido';
+    }
     return null;
   }
+
   String? _validateSecurityNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'El codigo de seguridad es requerido';
+    }
     return null;
   }
 
@@ -135,7 +146,7 @@ class _PayMethodScreenState extends State<PayMethodScreen> {
                               padding: const EdgeInsets.only(bottom: 20.0),
                               child: SizedBox(
                                 width: 300,
-                                child: TextField(
+                                child: TextFormField(
                                   controller: _dateExpireController,
                                   decoration: InputDecoration(
                                     labelText: 'Fecha de expiración',
@@ -143,6 +154,7 @@ class _PayMethodScreenState extends State<PayMethodScreen> {
                                       borderRadius: BorderRadius.circular(12.0),
                                     ),
                                 ),
+                                  validator: _validateDateExpire,
                                   keyboardType: TextInputType.datetime,
                               )
                             )
@@ -151,7 +163,7 @@ class _PayMethodScreenState extends State<PayMethodScreen> {
                                 padding: const EdgeInsets.only(left: 20.0, bottom: 20.0),
                                 child: SizedBox(
                                     width: 300,
-                                    child: TextField(
+                                    child: TextFormField(
                                       controller: _securityNumberController,
                                       decoration: InputDecoration(
                                         labelText: 'Codigo de seguridad',
@@ -159,6 +171,7 @@ class _PayMethodScreenState extends State<PayMethodScreen> {
                                           borderRadius: BorderRadius.circular(12.0),
                                         ),
                                       ),
+                                      validator: _validateSecurityNumber,
                                     )
                                 )
                             )
