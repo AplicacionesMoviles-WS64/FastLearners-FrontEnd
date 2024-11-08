@@ -1,15 +1,31 @@
+import 'dart:ffi';
+
 import 'package:fastlearners_frontend_flutter/home_screen.dart';
 import 'package:fastlearners_frontend_flutter/pay_method_screen.dart';
 import 'package:flutter/material.dart';
+
+import 'database/api_rest_service.dart';
 
 
 class SelectPlanScreen extends StatefulWidget {
   @override
   SelectPlanScreenState createState() => SelectPlanScreenState();
+
+  final int userId;
+
+  const SelectPlanScreen({
+    Key? key,
+    required this.userId
+  }) : super(key: key);
 }
 
 class SelectPlanScreenState extends State<SelectPlanScreen> {
+
+
+  final ApiRestService _apiService = ApiRestService();
+
   String selectedPlan = "";
+  
 
   void buttonEvent(String plan) {
     setState(() {
@@ -31,6 +47,7 @@ class SelectPlanScreenState extends State<SelectPlanScreen> {
           ),
           TextButton(
             onPressed: () {
+              _apiService.updateUserMembership(widget.userId, selectedPlan);
               Navigator.pop(context); // Cierra el diálogo
               Navigator.push(
                 context,

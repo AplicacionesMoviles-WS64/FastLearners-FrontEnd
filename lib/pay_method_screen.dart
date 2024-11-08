@@ -1,6 +1,9 @@
 import 'package:fastlearners_frontend_flutter/home_screen.dart';
 import 'package:fastlearners_frontend_flutter/login_screen.dart';
+import 'package:fastlearners_frontend_flutter/modelo/payment_card.dart';
 import 'package:flutter/material.dart';
+
+import 'database/api_rest_service.dart';
 
 class PayMethodScreen extends StatefulWidget {
   @override
@@ -8,6 +11,8 @@ class PayMethodScreen extends StatefulWidget {
 }
 
 class _PayMethodScreenState extends State<PayMethodScreen> {
+
+  final ApiRestService _apiService = ApiRestService();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -17,6 +22,7 @@ class _PayMethodScreenState extends State<PayMethodScreen> {
   final TextEditingController _dateExpireController = TextEditingController();
   final TextEditingController _securityNumberController = TextEditingController();
   final TextEditingController _cardNicknameController = TextEditingController();
+
 
   final bool _isCardNicknameVisible = false;
   bool _isLoading = false;
@@ -71,7 +77,16 @@ class _PayMethodScreenState extends State<PayMethodScreen> {
         _isLoading = true;
       });
 
-      await Future.delayed(Duration(seconds: 2));
+
+      var paymentCard = new PaymentCard(
+          titleName: _titleNameController.text,
+          numberCard: _numberCardController.text,
+          email: _emailController.text,
+          dateExpire: _dateExpireController.text,
+          securityNumber: _securityNumberController.text,
+          cardNickname: _cardNicknameController.text);
+
+      _apiService.insertPaymentCard(paymentCard);
 
       setState(() {
         _isLoading = false;

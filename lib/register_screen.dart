@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:fastlearners_frontend_flutter/selectplans_screen.dart';
 import '../modelo/user.dart';
@@ -10,6 +12,8 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
 
+  final ApiRestService _apiService = ApiRestService();
+
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _firstNameController = TextEditingController();
@@ -17,10 +21,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  int id = 0;
+
   bool _isPasswordVisible = false;
   bool _isLoading = false;
-
-  final ApiRestService _apiService = ApiRestService();
 
   String? _validateName(String? value) {
     if (value == null || value.isEmpty) {
@@ -80,7 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       // Navegar a la siguiente pantalla después de un registro exitoso
       Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SelectPlanScreen()));
+          MaterialPageRoute(builder: (context) => SelectPlanScreen(userId: this.id)));
 
       // Mostrar mensaje de éxito
       ScaffoldMessenger.of(context).showSnackBar(
@@ -204,7 +208,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.0),
                         ),
-                        minimumSize: Size(double.infinity, 50),
                       ),
                     ),
                   ],
