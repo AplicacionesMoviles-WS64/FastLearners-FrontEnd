@@ -4,6 +4,8 @@ import 'package:fastlearners_frontend_flutter/modelo/repository.dart';
 import 'package:fastlearners_frontend_flutter/modelo/user.dart';
 import 'package:http/http.dart' as http;
 
+import '../modelo/payment_card.dart';
+
 class ApiRestService {
 
   // Enlace del backend
@@ -31,6 +33,34 @@ class ApiRestService {
       }
     } catch (exception) {
       print("Error al realizar la solicitud: $exception");
+    }
+  }
+
+  void updateUserMembership(int id, String membership) async {
+    final url = Uri.parse('$baseUrl/users/setMembership');
+
+    try {
+
+      var json = jsonEncode({
+        'id': id,
+        'memberships': [ membership ]
+      });
+
+      print(json);
+      final response = await http.put(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json ,
+      );
+
+      if (response.statusCode == 200) {
+        print("Membresía actualizada exitosamente");
+        return;
+      } else {
+        print("Error al actualizar membresía: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Error al realizar la solicitud: $e");
     }
   }
 
@@ -120,5 +150,25 @@ class ApiRestService {
       print("Error al realizar la solicitud: $e");
     }
     return null;
+  }
+
+  Future<void> insertPaymentCard(PaymentCard card) async {
+    final url = Uri.parse('$baseUrl/paymentCards');
+
+    try {
+      var response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(card.toMap()),
+      );
+
+      if (response.statusCode == 201) {
+        print("Tarjeta creada exitosamente");
+      } else {
+        print("Error al crear tarjeta: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Error al realizar la solicitud: $e");
+    }
   }
 }
