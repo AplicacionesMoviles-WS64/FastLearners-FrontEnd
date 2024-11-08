@@ -165,8 +165,9 @@ class RepositoryScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => UploadContentScreen(),
+                        builder: (context) => UploadContentScreen(repositoryName: repositoryName,),
                       ),
+
                     );
                   },
                   style: ElevatedButton.styleFrom(

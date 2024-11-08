@@ -5,7 +5,7 @@ class Content {
   String description;
   String visibility;
   String collaborators;
-  int repositoryId; 
+  String repositoryName;
 
   Content({
     this.id,
@@ -14,7 +14,7 @@ class Content {
     required this.description,
     required this.visibility,
     required this.collaborators,
-    required this.repositoryId,
+    required this.repositoryName,
   });
 
   Map<String, dynamic> toMap() {
@@ -25,7 +25,7 @@ class Content {
       'description': description,
       'visibility': visibility,
       'collaborators': collaborators,
-      'repositoryId': repositoryId,
+      'repositoryName': repositoryName,
     };
   }
 
@@ -38,7 +38,7 @@ class Content {
       description: map['description'],
       visibility: map['visibility'],
       collaborators: map['collaborators'],
-      repositoryId: map['repositoryId'],
+      repositoryName: map['repositoryName'],
     );
   }
 }

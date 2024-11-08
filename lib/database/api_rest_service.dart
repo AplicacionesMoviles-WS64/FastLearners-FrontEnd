@@ -171,5 +171,18 @@ class ApiRestService {
       print("Error al realizar la solicitud: $e");
     }
   }
+  Future<void> createContent(String repositoryName, Map<String, dynamic> contentData) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/repositories/$repositoryName/contents'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(contentData),
+    );
+
+    if (response.statusCode == 201) {
+      print('Content created successfully');
+    } else {
+      print('Failed to create content: ${response.statusCode}, ${response.body}');
+    }
+  }
 
 }

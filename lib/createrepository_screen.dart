@@ -20,7 +20,7 @@ class _CreateRepositoryScreenState extends State<CreateRepositoryScreen> {
 
   String? _repositoryName;
   String? _description;
-  String? _visibility = 'Seleccionar'; // Valor inicial del Dropdown
+  String? _visibility = 'Seleccionar';
 
   bool _includeReadme = false;
   bool _includeGitignore = false;

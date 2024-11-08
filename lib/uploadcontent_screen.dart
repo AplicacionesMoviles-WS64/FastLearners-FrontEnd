@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
 
+import 'package:fastlearners_frontend_flutter/modelo/content.dart';
+
+import 'database/api_rest_service.dart';
+
 class UploadContentScreen extends StatefulWidget {
+  final String repositoryName;
+
+  const UploadContentScreen({
+    Key? key,
+    required this.repositoryName,
+  }) : super(key: key);
+
   @override
   _UploadContentScreenState createState() => _UploadContentScreenState();
 }
@@ -12,13 +23,37 @@ class _UploadContentScreenState extends State<UploadContentScreen> {
   String? _description;
   String? _visibility = 'Seleccionar';
   String? _collaborators;
-  String? _repository;
+
+  Future<void> _uploadContent() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    // Guardar los datos del formulario
+    _formKey.currentState!.save();
+
+    // Crear una instancia de Content
+    final content = Content(
+      titleContent: _title ?? '',
+      contentType: _contentType ?? '',
+      description: _description ?? '',
+      visibility: _visibility == 'Público' ? 'public' : 'private',
+      collaborators: _collaborators ?? '',
+      repositoryName: widget.repositoryName,
+    );
+
+    // Llama a createContent de ApiRestService
+    final apiService = ApiRestService();
+    await apiService.createContent(content.repositoryName, content.toMap());
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Contenido subido con éxito')),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
+        title: Text('Subir Contenido a ${widget.repositoryName}'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -77,7 +112,7 @@ class _UploadContentScreenState extends State<UploadContentScreen> {
               SizedBox(height: 16),
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'Descripción (obligatorio)',
+                  labelText: 'Descripción',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
@@ -89,19 +124,6 @@ class _UploadContentScreenState extends State<UploadContentScreen> {
                 onSaved: (value) {
                   _description = value;
                 },
-              ),
-              SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  // Acción para añadir archivos
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Función de añadir archivos aún no implementada')),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(254, 95, 85, 1),
-                ),
-                child: Text('Añadir archivos', style: TextStyle(color: Colors.white)),
               ),
               SizedBox(height: 16),
               DropdownButtonFormField<String>(
@@ -139,28 +161,10 @@ class _UploadContentScreenState extends State<UploadContentScreen> {
                   _collaborators = value;
                 },
               ),
-              SizedBox(height: 16),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Vincular a un repositorio (opcional)',
-                  hintText: 'ej: fastlearners-repo',
-                  border: OutlineInputBorder(),
-                ),
-                onSaved: (value) {
-                  _repository = value;
-                },
-              ),
               SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Contenido subido con éxito')),
-                      );
-                    }
-                  },
+                  onPressed: _uploadContent,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromRGBO(254, 95, 85, 1),
                     padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),

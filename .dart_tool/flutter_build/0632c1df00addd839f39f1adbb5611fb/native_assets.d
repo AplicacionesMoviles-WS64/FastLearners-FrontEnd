@@ -1,1 +1,0 @@
- /Users/marco/development/FastLearners-FrontEnd/.dart_tool/flutter_build/0632c1df00addd839f39f1adbb5611fb/native_assets.yaml: 
