@@ -11,7 +11,7 @@ class User {
     required this.password,
   });
 
-  // Convertir el objeto Usuario a un Map para guardar en la base de datos
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -20,8 +20,6 @@ class User {
       'password': password,
     };
   }
-
-  // Crear un objeto Usuario a partir de un Map proveniente de la base de datos
   User.fromMap(Map<String, dynamic> res):
         id = res["id"],
         name = res["username"],
