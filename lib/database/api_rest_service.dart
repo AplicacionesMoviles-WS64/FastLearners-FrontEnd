@@ -179,7 +179,9 @@ class ApiRestService {
 
   /// Obtiene todos los contenidos de un repositorio por su ID
   Future<List<Content>> getAllContentsByRepositoryId(int repositoryId) async {
-    final url = Uri.parse('$baseUrl/$repositoryId/contents');
+    final url = Uri.parse('$baseUrl/repositories/$repositoryId/contents');
+
+    print(url);
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
