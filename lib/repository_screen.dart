@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:fastlearners_frontend_flutter/profile_screen.dart';
 import 'package:fastlearners_frontend_flutter/viewrepositories_Screen.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,7 @@ import 'uploadcontent_screen.dart';
 
 class RepositoryScreen extends StatelessWidget {
 
+  final int repositoryId;
   final String repositoryName;
   final String description;
   final String visibility;
@@ -17,6 +20,7 @@ class RepositoryScreen extends StatelessWidget {
 
   const RepositoryScreen({
     Key? key,
+    required this.repositoryId,
     required this.repositoryName,
     required this.description,
     required this.visibility,
@@ -165,7 +169,7 @@ class RepositoryScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => UploadContentScreen(repositoryName: repositoryName,),
+                        builder: (context) => UploadContentScreen(repositoryName: repositoryName, repositoryId: repositoryId,),
                       ),
 
                     );

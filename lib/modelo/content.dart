@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 class Content {
   int? id;
   String titleContent;
@@ -5,7 +7,7 @@ class Content {
   String description;
   String visibility;
   String collaborators;
-  String repositoryName;
+  int repositoryId;
 
   Content({
     this.id,
@@ -14,7 +16,7 @@ class Content {
     required this.description,
     required this.visibility,
     required this.collaborators,
-    required this.repositoryName,
+    required this.repositoryId,
   });
 
   Map<String, dynamic> toMap() {
@@ -25,7 +27,7 @@ class Content {
       'description': description,
       'visibility': visibility,
       'collaborators': collaborators,
-      'repositoryName': repositoryName,
+      'repositoryId': repositoryId,
     };
   }
 
@@ -38,7 +40,7 @@ class Content {
       description: map['description'],
       visibility: map['visibility'],
       collaborators: map['collaborators'],
-      repositoryName: map['repositoryName'],
+      repositoryId: map['repositoryId'],
     );
   }
 }

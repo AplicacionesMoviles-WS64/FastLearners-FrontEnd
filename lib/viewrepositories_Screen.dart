@@ -125,6 +125,7 @@ class _RepositoryScreenState extends State<RepositoryListScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => RepositoryScreen(
+                      repositoryId: repository.id!,
                       repositoryName: repository.name,
                       description: repository.description,
                       visibility: repository.visibility,

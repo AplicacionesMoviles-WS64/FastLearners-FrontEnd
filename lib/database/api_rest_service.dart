@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ffi';
+import 'package:fastlearners_frontend_flutter/modelo/content.dart';
 import 'package:fastlearners_frontend_flutter/modelo/repository.dart';
 import 'package:fastlearners_frontend_flutter/modelo/user.dart';
 import 'package:http/http.dart' as http;
@@ -89,8 +90,7 @@ class ApiRestService {
     return null;
   }
 
-  Future<void> insertRepository(Repositorio repo) async {
-
+  Future<Repositorio?> insertRepository(Repositorio repo) async {
     var url = Uri.parse('$baseUrl/repositories');
 
     try {
@@ -102,13 +102,18 @@ class ApiRestService {
 
       if (response.statusCode == 200) {
         print("Repositorio creado exitosamente");
+        final data = jsonDecode(response.body);
+        return Repositorio.fromMap(data);
       } else {
-        print("Error al crear repositorio: ${response.statusCode}");
+        print("Error al crear repositorio: ${response.statusCode} - ${response.body}");
+        return null;
       }
     } catch (e) {
       print("Error al realizar la solicitud: $e");
+      return null;
     }
   }
+
 
   Future<List<Repositorio>> getRepositories() async {
 
@@ -171,9 +176,29 @@ class ApiRestService {
       print("Error al realizar la solicitud: $e");
     }
   }
+
+  /// Obtiene todos los contenidos de un repositorio por su ID
+  Future<List<Content>> getAllContentsByRepositoryId(int repositoryId) async {
+    final url = Uri.parse('$baseUrl/$repositoryId/contents');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      List<dynamic> jsonResponse = json.decode(response.body);
+
+      return jsonResponse.map((json) => Content.fromMap(json)).toList();
+    } else {
+      throw Exception('Error al obtener los contenidos: ${response.statusCode}');
+    }
+  }
+
   Future<void> createContent(String repositoryName, Map<String, dynamic> contentData) async {
+
+    print("content: $contentData");
+
+    var repositoryId = contentData["repositoryId"];
+
     final response = await http.post(
-      Uri.parse('$baseUrl/repositories/$repositoryName/contents'),
+      Uri.parse('$baseUrl/repositories/$repositoryId/contents'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(contentData),
     );

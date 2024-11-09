@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 import 'package:fastlearners_frontend_flutter/modelo/content.dart';
@@ -6,10 +8,12 @@ import 'database/api_rest_service.dart';
 
 class UploadContentScreen extends StatefulWidget {
   final String repositoryName;
+  final int repositoryId;
 
   const UploadContentScreen({
     Key? key,
     required this.repositoryName,
+    required this.repositoryId
   }) : super(key: key);
 
   @override
@@ -37,12 +41,12 @@ class _UploadContentScreenState extends State<UploadContentScreen> {
       description: _description ?? '',
       visibility: _visibility == 'Público' ? 'public' : 'private',
       collaborators: _collaborators ?? '',
-      repositoryName: widget.repositoryName,
+      repositoryId: widget.repositoryId,
     );
 
     // Llama a createContent de ApiRestService
     final apiService = ApiRestService();
-    await apiService.createContent(content.repositoryName, content.toMap());
+    await apiService.createContent(widget.repositoryName, content.toMap());
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Contenido subido con éxito')),

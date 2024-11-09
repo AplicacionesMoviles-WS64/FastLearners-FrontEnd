@@ -25,10 +25,9 @@ class _CreateRepositoryScreenState extends State<CreateRepositoryScreen> {
   bool _includeReadme = false;
   bool _includeGitignore = false;
 
-
   String? _collaborators;
 
-  void _createRepository(BuildContext context) {
+  Future<void> _createRepository(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       ScaffoldMessenger.of(context).showSnackBar(
@@ -45,12 +44,19 @@ class _CreateRepositoryScreenState extends State<CreateRepositoryScreen> {
         collaborators: _collaborators ?? 'Sin colaboradores',
       );
       
-      _apiService.insertRepository(newRepo);
+      var repository = await _apiService.insertRepository(newRepo);
+
+      if (repository == null){
+        return;
+      }
+
+      var repositoryId = repository.id!;
 
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => RepositoryScreen(
+            repositoryId: repositoryId,
             repositoryName: _repositoryName!,
             description: _description ?? 'Sin descripción',
             visibility: _visibility!,
