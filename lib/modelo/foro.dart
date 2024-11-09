@@ -1,10 +1,10 @@
 import 'dart:ffi';
 
-class foro{
+class Foro{
   int? id;
   String title;
   String body;
-  foro({
+  Foro({
     this.id,
     required this.title,
     required this.body,
@@ -16,8 +16,8 @@ class foro{
       'body': body,
     };
   }
-  static foro fromMap(Map<String, dynamic> map){
-    return foro(
+  static Foro fromMap(Map<String, dynamic> map){
+    return Foro(
       id: map['id'],
       title: map['title'],
       body: map['body'],

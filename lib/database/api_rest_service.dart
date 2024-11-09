@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ffi';
+import 'package:fastlearners_frontend_flutter/modelo/foro.dart';
 import 'package:fastlearners_frontend_flutter/modelo/repository.dart';
 import 'package:fastlearners_frontend_flutter/modelo/user.dart';
 import 'package:http/http.dart' as http;
@@ -184,5 +185,6 @@ class ApiRestService {
       print('Failed to create content: ${response.statusCode}, ${response.body}');
     }
   }
+
 
 }
