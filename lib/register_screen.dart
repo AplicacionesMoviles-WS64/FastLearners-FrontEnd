@@ -77,6 +77,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       // Insertar el usuario en la base de datos
       await _apiService.insertUser(newUser);
 
+      User? user = await _apiService.getUserByCredentials(
+          "${_firstNameController.text} ${_lastNameController.text}",
+          _passwordController.text);
+
+      var userId = user!.id!;
+
       setState(() {
         _isLoading = false;
       });
@@ -84,7 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       // Navegar a la siguiente pantalla después de un registro exitoso
       Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SelectPlanScreen(userId: this.id)));
+          MaterialPageRoute(builder: (context) => SelectPlanScreen(userId: userId )));
 
       // Mostrar mensaje de éxito
       ScaffoldMessenger.of(context).showSnackBar(

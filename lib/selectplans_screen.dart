@@ -5,6 +5,14 @@ import 'package:fastlearners_frontend_flutter/pay_method_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'database/api_rest_service.dart';
+import 'dart:ffi';
+import 'dart:ffi';
+
+import 'package:fastlearners_frontend_flutter/home_screen.dart';
+import 'package:fastlearners_frontend_flutter/pay_method_screen.dart';
+import 'package:flutter/material.dart';
+
+import 'database/api_rest_service.dart';
 
 
 class SelectPlanScreen extends StatefulWidget {
@@ -27,7 +35,7 @@ class SelectPlanScreenState extends State<SelectPlanScreen> {
   String selectedPlan = "";
   
 
-  void buttonEvent(String plan) {
+  void buttonEvent(String plan, String title) {
     setState(() {
       selectedPlan = plan;
     });
@@ -37,7 +45,7 @@ class SelectPlanScreenState extends State<SelectPlanScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text('Confirmar selección'),
-        content: Text('¿Quieres elegir el $plan?'),
+        content: Text('¿Quieres elegir el $title?'),
         actions: [
           TextButton(
             onPressed: () {
@@ -61,7 +69,7 @@ class SelectPlanScreenState extends State<SelectPlanScreen> {
     );
   }
 
-  Widget buildPlanCard(String title, String price, List<Map<String, IconData>> features) {
+  Widget buildPlanCard(String id, String title, String price, List<Map<String, IconData>> features) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.all(16),
@@ -109,7 +117,7 @@ class SelectPlanScreenState extends State<SelectPlanScreen> {
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () => buttonEvent(title), // Al presionar se abre el diálogo
+            onPressed: () => buttonEvent(id, title), // Al presionar se abre el diálogo
             child: const Text(
               "Elegir plan",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
@@ -147,6 +155,7 @@ class SelectPlanScreenState extends State<SelectPlanScreen> {
               const SizedBox(height: 20),
               // Planes
               buildPlanCard(
+                "BASIC",
                 "Plan Básico",
                 "S/.15.00",
                 [
@@ -157,6 +166,7 @@ class SelectPlanScreenState extends State<SelectPlanScreen> {
                 ],
               ),
               buildPlanCard(
+                "REGULAR",
                 "Plan Estándar",
                 "S/.20.00",
                 [
@@ -167,6 +177,7 @@ class SelectPlanScreenState extends State<SelectPlanScreen> {
                 ],
               ),
               buildPlanCard(
+                "PREMIUM",
                 "Plan Premium",
                 "S/.50.00",
                 [

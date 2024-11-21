@@ -10,7 +10,7 @@ import '../modelo/payment_card.dart';
 class ApiRestService {
 
   // Enlace del backend
-  final String baseUrl = 'http://localhost:8080/api/v1';
+  final String baseUrl = 'https://fast-learns-6b1024fb4f8d.herokuapp.com/api/v1';
 
   Future<void> insertUser(User user) async {
     final url = Uri.parse('$baseUrl/authentication/sign-up');
@@ -28,6 +28,7 @@ class ApiRestService {
       );
 
       if (response.statusCode == 201) {
+
         print("Usuario creado exitosamente");
       } else {
         print("Error al crear usuario: ${response.statusCode}");
@@ -68,6 +69,8 @@ class ApiRestService {
   Future<User?> getUserByCredentials(String username, String password) async {
     final url = Uri.parse('$baseUrl/authentication/sign-in');
     try {
+
+      print("user: $username, password $password");
 
       final response = await http.post(
         url,
