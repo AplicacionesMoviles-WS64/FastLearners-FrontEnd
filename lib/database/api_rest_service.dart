@@ -10,7 +10,7 @@ import '../modelo/payment_card.dart';
 class ApiRestService {
 
   // Enlace del backend
-  final String baseUrl = 'http://localhost:8080/api/v1';
+  final String baseUrl = 'http://fast-learns-6b1024fb4f8d.herokuapp.com/api/v1';
 
   Future<User?> insertUser(User user) async {
     final url = Uri.parse('$baseUrl/authentication/sign-up');
