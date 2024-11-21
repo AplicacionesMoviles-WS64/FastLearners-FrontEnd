@@ -86,7 +86,7 @@ class _RepositoryScreenState extends State<RepositoryListScreen> {
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    backgroundImage: AssetImage('assets/images/avatar.png'),
+                    backgroundImage: AssetImage('assets/home/avatar.png'),
                   ),
                   SizedBox(height: 8),
                   Text(

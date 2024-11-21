@@ -10,9 +10,9 @@ import '../modelo/payment_card.dart';
 class ApiRestService {
 
   // Enlace del backend
-  final String baseUrl = 'https://fast-learns-6b1024fb4f8d.herokuapp.com/api/v1';
+  final String baseUrl = 'http://localhost:8080/api/v1';
 
-  Future<void> insertUser(User user) async {
+  Future<User?> insertUser(User user) async {
     final url = Uri.parse('$baseUrl/authentication/sign-up');
 
     try {
@@ -28,15 +28,41 @@ class ApiRestService {
       );
 
       if (response.statusCode == 201) {
-
+        print("User body: " + response.body);
         print("Usuario creado exitosamente");
+        return User.fromLoginMap(jsonDecode(response.body));
       } else {
         print("Error al crear usuario: ${response.statusCode}");
       }
     } catch (exception) {
       print("Error al realizar la solicitud: $exception");
     }
+    return null;
   }
+
+  Future<void> updateUser(String username, String email) async {
+    final userCommand = {
+      "username": username,
+      "email": email,
+    };
+
+    print("Updating user: $userCommand");
+
+    final response = await http.put(
+      Uri.parse('$baseUrl/users/update'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(userCommand),
+    );
+
+    if (response.statusCode == 200) {
+      print('User updated successfully');
+    } else {
+      print(
+        'Failed to update user: ${response.statusCode}, ${response.body}',
+      );
+    }
+  }
+
 
   void updateUserMembership(int id, String membership) async {
     final url = Uri.parse('$baseUrl/users/setMembership');
@@ -80,6 +106,10 @@ class ApiRestService {
               'username': username,
               'password': password}),
       );
+
+      var responseBody = response.body;
+
+      print("response: $responseBody");
 
       if (response.statusCode == 200) {
         return User.fromMap(jsonDecode(response.body));
@@ -215,4 +245,27 @@ class ApiRestService {
     }
   }
 
+  Future<void> createPost(String title, String body, int userId) async {
+    final post = {
+      'postTitle': title,
+      'postBody': body,
+      'userId': userId,
+    };
+
+    print("Enviando datos al endpoint: $post");
+
+    final response = await http.post(
+      Uri.parse('$baseUrl/api/v1/foros'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(post),
+    );
+
+    if (response.statusCode == 201) {
+      print('Post creado exitosamente');
+    } else {
+      print(
+        'Error al crear el post: ${response.statusCode}, ${response.body}',
+      );
+    }
+  }
 }

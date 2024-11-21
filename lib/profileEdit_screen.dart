@@ -1,6 +1,11 @@
+import 'package:fastlearners_frontend_flutter/modelo/user.dart';
 import 'package:flutter/material.dart';
 
+import 'database/api_rest_service.dart';
+
 class ProfileEditScreen extends StatefulWidget {
+
+
   final String currentName;
   final String currentEmail;
 
@@ -15,6 +20,9 @@ class ProfileEditScreen extends StatefulWidget {
 }
 
 class _ProfileEditScreenState extends State<ProfileEditScreen> {
+
+  final ApiRestService _apiService = ApiRestService();
+
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -27,9 +35,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     _emailController.text = widget.currentEmail;
   }
 
-  void _saveProfile() {
+  Future<void> _saveProfile() async {
     if (_formKey.currentState!.validate()) {
-      // Aquí puedes implementar la lógica para guardar los cambios (e.g., llamar al backend)
+
+      await _apiService.updateUser(widget.currentName, widget.currentEmail);
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Perfil actualizado con éxito')),
       );

@@ -75,11 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
 
       // Insertar el usuario en la base de datos
-      await _apiService.insertUser(newUser);
-
-      User? user = await _apiService.getUserByCredentials(
-          "${_firstNameController.text} ${_lastNameController.text}",
-          _passwordController.text);
+      User? user = await _apiService.insertUser(newUser);
 
       var userId = user!.id!;
 

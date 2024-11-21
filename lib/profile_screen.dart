@@ -71,7 +71,7 @@ class UserProfileScreen extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    backgroundImage: AssetImage('assets/images/avatar.png'),
+                    backgroundImage: AssetImage('assets/home/avatar.png'),
                   ),
                   SizedBox(height: 8),
                   Text(
@@ -135,7 +135,7 @@ class UserProfileScreen extends StatelessWidget {
             Center(
               child: CircleAvatar(
                 radius: 50,
-                backgroundImage: AssetImage('assets/images/avatar.png'),
+                backgroundImage: AssetImage('assets/home/avatar.png'),
               ),
             ),
             SizedBox(height: 16),

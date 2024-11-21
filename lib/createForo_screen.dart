@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'database/api_rest_service.dart';
+
 class ForumCreateScreen extends StatefulWidget {
   final int userId;
 
@@ -10,20 +12,23 @@ class ForumCreateScreen extends StatefulWidget {
 }
 
 class _ForumCreateScreenState extends State<ForumCreateScreen> {
+
+  final ApiRestService _apiService = ApiRestService();
+
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _bodyController = TextEditingController();
 
-  void _savePost() {
+  Future<void> _savePost() async {
     if (_formKey.currentState!.validate()) {
       final post = {
         'postTitle': _titleController.text,
         'postBody': _bodyController.text,
         'userId': widget.userId,
       };
-
-      // Aquí puedes implementar la lógica para guardar el post en el backend
-
+      
+      await _apiService.createPost(_titleController.text, _bodyController.text, widget.userId);
+      
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Post creado con éxito')),
       );
