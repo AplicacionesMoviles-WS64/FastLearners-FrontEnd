@@ -2,6 +2,7 @@ import 'package:fastlearners_frontend_flutter/profile_screen.dart';
 import 'package:fastlearners_frontend_flutter/viewrepositories_Screen.dart';
 import 'package:flutter/material.dart';
 
+import 'createForo_screen.dart';
 import 'createrepository_screen.dart';
 import 'home_screen.dart';
 
@@ -129,33 +130,21 @@ class CommunityForum extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('Nuevo post'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ForumCreateScreen(userId: 1,),
+                          ),
+                        );
+                      },
+                      child: const Text('Nuevo post',),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromRGBO(254, 95, 85, 1), // Color de los botones
+                        backgroundColor: const Color.fromRGBO(254, 95, 85, 1),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('Ver post'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromRGBO(254, 95, 85, 1), // Color de los botones
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: const Text('Favoritos'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromRGBO(254, 95, 85, 1), // Color de los botones
-                      ),
-                    ),
-                  ),
+
                 ],
               ),
               const SizedBox(height: 20),
