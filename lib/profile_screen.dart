@@ -1,3 +1,4 @@
+import 'package:fastlearners_frontend_flutter/profileEdit_screen.dart';
 import 'package:fastlearners_frontend_flutter/viewrepositories_Screen.dart';
 import 'package:flutter/material.dart';
 
@@ -155,11 +156,18 @@ class UserProfileScreen extends StatelessWidget {
             ),
             SizedBox(height: 32),
             ElevatedButton(
-              onPressed: () {
-                // Acciones al editar el perfil
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Función de editar perfil no implementada')),
+              onPressed: () async {
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileEditScreen(
+                      currentName: userName,
+                      currentEmail: email,
+                    ),
+                  ),
                 );
+
+
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color.fromRGBO(254, 95, 85, 1),
