@@ -1,5 +1,7 @@
 import 'dart:ffi';
 
+import 'package:fastlearners_frontend_flutter/repository_screen.dart';
+import 'package:fastlearners_frontend_flutter/viewrepositories_Screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fastlearners_frontend_flutter/modelo/content.dart';
@@ -33,6 +35,10 @@ class _UploadContentScreenState extends State<UploadContentScreen> {
 
     // Guardar los datos del formulario
     _formKey.currentState!.save();
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => RepositoryListScreen()));
+
 
     // Crear una instancia de Content
     final content = Content(
@@ -57,6 +63,8 @@ class _UploadContentScreenState extends State<UploadContentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 4, // Sombra debajo del AppBar
+        backgroundColor: Color.fromRGBO(254, 95, 85, 1),
         title: Text('Subir Contenido a ${widget.repositoryName}'),
       ),
       body: SingleChildScrollView(

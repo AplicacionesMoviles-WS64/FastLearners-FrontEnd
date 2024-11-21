@@ -133,7 +133,7 @@ class _PayMethodScreenState extends State<PayMethodScreen> {
                           child: TextFormField(
                             controller: _titleNameController,
                             decoration: InputDecoration(
-                              labelText: 'Numero del titular',
+                              labelText: 'Nombre del titular',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
@@ -177,7 +177,7 @@ class _PayMethodScreenState extends State<PayMethodScreen> {
                             Padding(
                                 padding: const EdgeInsets.only(left: 20.0, bottom: 20.0),
                                 child: SizedBox(
-                                    width: 300,
+                                    width: 150,
                                     child: TextFormField(
                                       controller: _securityNumberController,
                                       decoration: InputDecoration(

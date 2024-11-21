@@ -63,14 +63,34 @@ class _ViewRepositoryScreenState extends State<RepositoryScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        elevation: 4, // Sombra debajo del AppBar
+        backgroundColor: Color.fromRGBO(254, 95, 85, 1), // Color principal
+        title: Text(
+          'FastLearners', // Cambia por el título que prefieras
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true, // Centra el título
         actions: [
           IconButton(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.notifications, color: Colors.white),
             onPressed: () {
-              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Notificaciones no implementadas')),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.person, color: Colors.white),
+            onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => UserProfileScreen(userName: '', email: '',)),
+                MaterialPageRoute(
+                  builder: (context) => UserProfileScreen(userName: '', email: ''),
+                ),
               );
             },
           ),
@@ -82,59 +102,71 @@ class _ViewRepositoryScreenState extends State<RepositoryScreen> {
           children: [
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Color.fromRGBO(189, 213, 234, 1),
-              ),
-              child: Text(
-                'Menú de navegación',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
+                gradient: LinearGradient(
+                  colors: [Color.fromRGBO(189, 213, 234, 1), Colors.white],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundImage: AssetImage('assets/images/avatar.png'),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Usuario',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    'usuario@email.com',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white70,
+                    ),
+                  ),
+                ],
               ),
             ),
             ListTile(
-              leading: Icon(Icons.home),
+              leading: Icon(Icons.home, color: Colors.blue),
               title: Text('Página de inicio'),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                );
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.create),
+              leading: Icon(Icons.create, color: Colors.green),
               title: Text('Crear repositorio'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CreateRepositoryScreen()),
-                );
+                Navigator.push(context, MaterialPageRoute(builder: (context) => CreateRepositoryScreen()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.create),
+              leading: Icon(Icons.folder, color: Colors.orange),
               title: Text('Ver repositorios'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RepositoryListScreen()),
-                );
+                Navigator.push(context, MaterialPageRoute(builder: (context) => RepositoryListScreen()));
               },
             ),
             ListTile(
-              leading: Icon(Icons.forum),
+              leading: Icon(Icons.forum, color: Colors.purple),
               title: Text('Foro de la comunidad'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CommunityForum()),
-                );
+                Navigator.push(context, MaterialPageRoute(builder: (context) => CommunityForum()));
               },
-            )
+            ),
           ],
         ),
       ),
@@ -144,51 +176,55 @@ class _ViewRepositoryScreenState extends State<RepositoryScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Nombre del Repositorio
               Text(
                 widget.repositoryName,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
+              SizedBox(height: 20),
+
+              // Descripción
+              _buildInfoCard(
+                title: 'Descripción',
+                content: widget.description.isNotEmpty
+                    ? widget.description
+                    : 'Sin descripción',
+              ),
+
+              // Visibilidad
+              _buildInfoCard(
+                title: 'Visibilidad',
+                content: widget.visibility,
+              ),
+
+              // Archivos incluidos
+              _buildInfoCard(
+                title: 'Archivos incluidos',
+                content:
+                'README.md: ${widget.includeReadme ? "Sí" : "No"}\n.gitignore: ${widget.includeGitignore ? "Sí" : "No"}',
+              ),
+
+              // Colaboradores
               SizedBox(height: 16),
               Text(
-                'Descripción:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              Text(widget.description.isNotEmpty ? widget.description : 'Sin descripción'),
-              SizedBox(height: 16),
-              Text(
-                'Visibilidad:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                widget.visibility,
-                style: TextStyle(fontSize: 18),
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Incluir README.md: ${widget.includeReadme ? "Sí" : "No"}',
-                style: TextStyle(fontSize: 18),
-              ),
-              Text(
-                'Incluir .gitignore: ${widget.includeGitignore ? "Sí" : "No"}',
-                style: TextStyle(fontSize: 18),
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Colaboradores:',
+                'Colaboradores',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 8),
               collaboratorList.isNotEmpty && widget.collaborators.isNotEmpty
-                  ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                  ? Wrap(
+                spacing: 8.0,
+                runSpacing: 4.0,
                 children: collaboratorList
-                    .map((collaborator) => Text(
-                  collaborator,
-                  style: TextStyle(fontSize: 16),
+                    .map((collaborator) => Chip(
+                  label: Text(collaborator),
+                  backgroundColor: Colors.blue.shade100,
                 ))
                     .toList(),
               )
-                  : Text('Sin colaboradores'),
+                  : Text('Sin colaboradores', style: TextStyle(fontSize: 16)),
+
+              // Botón de subir contenido
               SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
@@ -196,7 +232,10 @@ class _ViewRepositoryScreenState extends State<RepositoryScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => UploadContentScreen(repositoryName: widget.repositoryName, repositoryId: widget.repositoryId,),
+                        builder: (context) => UploadContentScreen(
+                          repositoryName: widget.repositoryName,
+                          repositoryId: widget.repositoryId,
+                        ),
                       ),
                     );
                   },
@@ -210,67 +249,94 @@ class _ViewRepositoryScreenState extends State<RepositoryScreen> {
                   ),
                 ),
               ),
+
+              // Lista de Contenidos
               SizedBox(height: 20),
+              Text(
+                'Contenidos',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
               Container(
-                padding: const EdgeInsets.all(2.0),
+                padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
-                  color: const Color.fromRGBO(189, 213, 234, 1),
+                  color: Color.fromRGBO(189, 213, 234, 1),
                   borderRadius: BorderRadius.circular(12.0),
                 ),
-                child: SizedBox(
-                  height: 200,
-                  child: Scrollbar(
-                    thumbVisibility: true,
-                    child: GridView.builder(
-                      primary: true, // Usar el PrimaryScrollController por defecto
-                      shrinkWrap: true,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1,
-                        childAspectRatio: 4 / 3,
-                      ),
-                      itemCount: contents.length,
-                      itemBuilder: (context, index) {
-
-                        var contentItem = contents[index];
-
-                        var titleContent = contentItem.titleContent;
-                        var contentType = contentItem.contentType;
-                        var description = contentItem.description;
-                        var visibility = contentItem.visibility;
-                        var collaborators = contentItem.collaborators;
-
-                        return Container(
-
-                          margin: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-
-                                Text("Title: $titleContent", style: const TextStyle(fontSize: 16)),
-                                Text("Type: $contentType", style: const TextStyle(fontSize: 16)),
-                                Text("Description: $description", style: const TextStyle(fontSize: 16)),
-                                Text("Visibility: $visibility", style: const TextStyle(fontSize: 16)),
-                                Text("Collaborators: $collaborators", style: const TextStyle(fontSize: 16)),
-
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: contents.length,
+                  itemBuilder: (context, index) {
+                    var contentItem = contents[index];
+                    return _buildContentCard(contentItem);
+                  },
                 ),
-              )
-
+              ),
             ],
           ),
         ),
       ),
     );
   }
+}
+Widget _buildInfoCard({required String title, required String content}) {
+  return Container(
+    margin: EdgeInsets.only(bottom: 16),
+    padding: EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.2),
+          spreadRadius: 2,
+          blurRadius: 5,
+          offset: Offset(0, 3),
+        ),
+      ],
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 8),
+        Text(
+          content,
+          style: TextStyle(fontSize: 16),
+        ),
+      ],
+    ),
+  );
+}
+Widget _buildContentCard(Content contentItem) {
+  return Card(
+    margin: EdgeInsets.only(bottom: 12),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Título: ${contentItem.titleContent}",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 4),
+          Text("Tipo: ${contentItem.contentType}", style: TextStyle(fontSize: 14)),
+          Text("Descripción: ${contentItem.description}",
+              style: TextStyle(fontSize: 14)),
+          Text("Visibilidad: ${contentItem.visibility}",
+              style: TextStyle(fontSize: 14)),
+          Text("Colaboradores: ${contentItem.collaborators}",
+              style: TextStyle(fontSize: 14)),
+        ],
+      ),
+    ),
+  );
 }
