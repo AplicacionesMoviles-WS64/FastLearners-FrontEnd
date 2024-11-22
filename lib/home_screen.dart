@@ -1,18 +1,27 @@
+import 'package:fastlearners_frontend_flutter/modelo/user.dart';
 import 'package:fastlearners_frontend_flutter/profile_screen.dart';
 import 'package:fastlearners_frontend_flutter/viewrepositories_Screen.dart';
 import 'package:flutter/material.dart';
 import 'community_forum.dart';
 import 'createrepository_screen.dart';
+import 'database/api_rest_service.dart';
 
 class HomeScreen extends StatefulWidget {
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String userName = "Usuario";
+  final ApiRestService _apiService = ApiRestService();
 
-  final String userEmail = "usuario@email.com";
+  @override
+  void initState() {
+
+  }
+
+  String userName = "Manuel";
+  final String userEmail = "manuelbrs@gmail.com";
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => UserProfileScreen(userName: '', email: ''),
+                  builder: (context) => UserProfileScreen(userName: "", email: ""),
                 ),
               );
             },
@@ -83,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   Text(
-                    'usuario@email.com',
+                    'manuelbrs@gmail.com',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.white70,
@@ -127,13 +136,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-
-
-
-
-
-
-
 
 
       body: SingleChildScrollView(
